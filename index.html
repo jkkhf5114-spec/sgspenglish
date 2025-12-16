@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Guru - No Server</title>
+    <!-- LZ-String for Link Compression (To make links shorter) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* --- THEME --- */
+        :root { --primary: #00d2ff; --secondary: #3a7bd5; --dark: #16222A; --gold: #FFD700; }
+        body {
+            background: linear-gradient(135deg, #16222A 0%, #3A6073 100%);
+            color: white; font-family: 'Poppins', sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; margin: 0; user-select: none;
+        }
+
+        .container {
+            width: 100%; max-width: 500px;
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px; padding: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            position: relative; max-height: 95vh; overflow-y: auto;
+        }
+
+        /* HEADER */
+        .school-name {
+            font-family: 'Cinzel', serif; font-size: 18px; font-weight: 900;
+            color: var(--gold); text-shadow: 0 2px 5px rgba(0,0,0,0.5); text-align: center;
+        }
+
+        /* SCREENS */
+        .screen { display: none; animation: fadeIn 0.4s ease; }
+        .screen.active { display: block; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+        /* BUTTONS & INPUTS */
+        input, textarea {
+            width: 90%; padding: 12px; margin: 5px 0;
+            background: rgba(0,0,0,0.3); border: 1px solid #555;
+            color: white; border-radius: 8px; text-align: center; font-family: inherit;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border: none; padding: 12px; width: 100%;
+            color: white; border-radius: 50px; font-weight: bold; font-size: 16px;
+            cursor: pointer; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,114,255,0.3);
+            transition: 0.2s;
+        }
+        .btn-green { background: #00e676; color: #004d40; }
+        .btn-red { background: #ff1744; color: white; margin-top:5px; padding:8px; font-size:12px;}
+
+        /* ADMIN AREA */
+        .bulk-box {
+            width: 95%; height: 120px; background: #111; color: #00e676;
+            font-family: monospace; font-size: 11px; padding: 10px;
+            border: 1px solid #333; text-align: left; resize: vertical;
+        }
+        
+        /* LINK DISPLAY */
+        .short-link-box {
+            background: #fff; color: #333; font-weight: bold;
+            padding: 15px; border-radius: 10px; margin-top: 15px;
+            border: 2px solid var(--primary); word-break: break-all;
+            display: none; text-align: center; font-size: 12px;
+        }
+
+        /* QUIZ UI */
+        .question-card {
+            background: rgba(255,255,255,0.1); padding: 15px;
+            border-radius: 10px; margin: 15px 0; border-left: 4px solid var(--primary);
+        }
+        .opt-btn {
+            width: 100%; padding: 12px; margin: 5px 0;
+            background: rgba(255,255,255,0.9); border: none; border-radius: 8px;
+            font-size: 15px; font-weight: 600; cursor: pointer; color: #333;
+            text-align: left; padding-left: 20px;
+        }
+        .opt-btn.correct { background: #00e676; color: white; }
+        .opt-btn.wrong { background: #ff1744; color: white; }
+
+        /* LOADER */
+        .loader {
+            border: 3px solid #f3f3f3; border-top: 3px solid var(--primary);
+            border-radius: 50%; width: 20px; height: 20px;
+            animation: spin 1s linear infinite; display: inline-block; vertical-align: middle;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* HIDDEN CANVAS */
+        #statusCanvas { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <button onclick="toggleAdmin()" style="position:absolute; top:10px; right:10px; background:none; border:1px solid #555; color:#aaa; font-size:10px; padding:5px 10px; border-radius:15px; cursor:pointer;">⚙️ Teacher</button>
+
+        <!-- 1. LOGIN -->
+        <div id="screen-login" class="screen active" style="text-align: center;">
+            <div class="school-name">SHRI GAYATRI SANSKAAR<br>PUBLIC SCHOOL</div>
+            <h2 style="color:var(--primary); margin:5px 0;">ENGLISH GURU</h2>
+            
+            <div style="width:90px; height:90px; border-radius:50%; background:#fff; margin:0 auto 15px; overflow:hidden; border:3px solid var(--primary);">
+                <img id="previewImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" style="width:100%; height:100%; object-fit:cover;">
+            </div>
+            
+            <label style="font-size:12px; background:rgba(0,0,0,0.4); padding:8px 15px; border-radius:20px; cursor:pointer; border:1px solid var(--primary);">
+                📸 Upload Photo
+                <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="loadPhoto(this)">
+            </label>
+            <br><br>
+
+            <input type="text" id="pName" placeholder="Student Name">
+            <input type="text" id="pClass" placeholder="Class">
+            <button class="btn" onclick="startQuiz()">🚀 START QUIZ</button>
+        </div>
+
+        <!-- 2. QUIZ -->
+        <div id="screen-quiz" class="screen">
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:#aaa;">
+                <span id="qCount">Q: 1/5</span>
+                <span id="timerTxt">20s</span>
+            </div>
+            <div style="height:4px; background:#333; margin:5px 0; border-radius:2px;">
+                <div id="timerBar" style="height:100%; width:100%; background:var(--primary); transition:width 1s linear;"></div>
+            </div>
+
+            <div class="question-card">
+                <span style="font-size:10px; color:#aaa;">QUESTION:</span><br>
+                <span id="qText" style="font-size:18px; font-weight:bold;">Loading...</span>
+                <button onclick="speakText()" style="background:none; border:none; color:var(--primary); cursor:pointer; font-size:18px;">🔊</button>
+            </div>
+
+            <div id="optBox"></div>
+        </div>
+
+        <!-- 3. RESULT -->
+        <div id="screen-result" class="screen" style="text-align: center;">
+            <div class="school-name">RESULT CARD</div>
+            <h1 id="finalScore" style="font-size:60px; color:var(--gold); margin:10px 0;">0/0</h1>
+            <p id="feedbackMsg" style="font-size:14px;">Great Job!</p>
+
+            <button class="btn" style="background:linear-gradient(45deg, #FFD700, #FFA500); color:black;" onclick="downloadStatus()">⬇️ Download Status</button>
+            <button class="btn btn-green" onclick="sendReport()">📲 Send to Teacher</button>
+            
+            <button class="btn" style="background:333; margin-top:15px;" onclick="location.reload()">↺ Play Again</button>
+        </div>
+
+        <!-- 4. ADMIN SCREEN -->
+        <div id="screen-admin" class="screen">
+            <h3 style="color:var(--gold); text-align:center;">🛠️ TEACHER'S PANEL</h3>
+            <p style="font-size:11px; text-align:center; color:#aaa;">Paste Questions & Get Magic Link</p>
+
+            <div style="font-size:10px; color:#aaa; margin-bottom:5px; background:rgba(0,0,0,0.3); padding:5px;">
+                Format: <b>Question | A,B,C,D | Ans(1-4) | Exp</b>
+            </div>
+
+            <textarea id="bulkInput" class="bulk-box" placeholder="What is red? | Apple,Sky,Grass,Sea | 1 | Apple is red."></textarea>
+
+            <button id="genBtn" class="btn btn-green" onclick="generateCompressedLink()">🔗 Generate Magic Link</button>
+            
+            <div id="shortLinkArea" class="short-link-box">
+                <span style="font-size:12px; color:#555;">SHARE THIS LINK:</span><br>
+                <a id="finalLink" href="#" target="_blank" style="color:#0072ff; text-decoration:none; font-size:14px;">...</a>
+            </div>
+            
+            <button id="waShareBtn" class="btn" style="display:none; background:#25D366;" onclick="shareLinkOnWa()">📲 Share Link on WhatsApp</button>
+            <button class="btn" style="background:#ff1744; margin-top:15px;" onclick="toggleAdmin()">❌ Close</button>
+        </div>
+    </div>
+
+    <canvas id="statusCanvas" width="720" height="1280"></canvas>
+
+<script>
+    // --- VARIABLES ---
+    let defaultData = [{"q":"Welcome! Click Start.","opts":["Start","Wait","Exit","Stop"],"a":0,"exp":"Welcome"}];
+    let quizData = [];
+    let currIdx=0, score=0, timer=20, interval, player={};
+    let playerImgObj = new Image();
+
+    // --- INIT (Read Compressed Data from URL) ---
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const encodedData = urlParams.get('q'); // 'q' for query/quiz
+        if(encodedData) {
+            try { 
+                // Decompress Data
+                const json = LZString.decompressFromEncodedURIComponent(encodedData);
+                quizData = JSON.parse(json); 
+            } 
+            catch(e) { console.error(e); quizData = defaultData; }
+        } else { quizData = defaultData; }
+    };
+
+    function loadPhoto(input) {
+        if(input.files && input.files[0]) {
+            const src = URL.createObjectURL(input.files[0]);
+            document.getElementById('previewImg').src = src;
+            playerImgObj.src = src;
+        }
+    }
+
+    // --- QUIZ LOGIC ---
+    function startQuiz() {
+        player.name = document.getElementById('pName').value;
+        player.class = document.getElementById('pClass').value;
+        if(!player.name) { alert("Enter Name"); return; }
+        document.getElementById('screen-login').classList.remove('active');
+        document.getElementById('screen-quiz').classList.add('active');
+        loadQ();
+    }
+
+    function loadQ() {
+        if(currIdx >= quizData.length) { showResult(); return; }
+        const data = quizData[currIdx];
+        document.getElementById('qText').innerText = data.q;
+        document.getElementById('qCount').innerText = `Q: ${currIdx+1}/${quizData.length}`;
+        const box = document.getElementById('optBox');
+        box.innerHTML = "";
+        data.opts.forEach((o, i) => { box.innerHTML += `<button class="opt-btn" onclick="checkAns(${i})">${o}</button>`; });
+        timer=20; clearInterval(interval);
+        document.getElementById('timerBar').style.width="100%";
+        interval = setInterval(() => {
+            timer--;
+            document.getElementById('timerTxt').innerText = timer+"s";
+            document.getElementById('timerBar').style.width=(timer/20)*100+"%";
+            if(timer<=0) { clearInterval(interval); checkAns(-1); }
+        }, 1000);
+    }
+
+    function checkAns(idx) {
+        clearInterval(interval);
+        if(idx === quizData[currIdx].a) score++;
+        currIdx++;
+        loadQ();
+    }
+
+    function speakText() {
+        const u = new SpeechSynthesisUtterance(quizData[currIdx].q);
+        u.lang = 'en-US'; window.speechSynthesis.speak(u);
+    }
+
+    function showResult() {
+        document.getElementById('screen-quiz').classList.remove('active');
+        document.getElementById('screen-result').classList.add('active');
+        document.getElementById('finalScore').innerText = `${score}/${quizData.length}`;
+    }
+
+    // --- ADMIN: GENERATE COMPRESSED LINK ---
+    function toggleAdmin() {
+        const admin = document.getElementById('screen-admin');
+        const login = document.getElementById('screen-login');
+        if(admin.classList.contains('active')) {
+            admin.classList.remove('active'); login.classList.add('active');
+        } else {
+            if(prompt("Password:") === "1234") {
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                admin.classList.add('active');
+            }
+        }
+    }
+
+    async function generateCompressedLink() {
+        const rawText = document.getElementById('bulkInput').value.trim();
+        if(!rawText) { alert("Paste questions first!"); return; }
+
+        const lines = rawText.split('\n');
+        const newList = [];
+
+        try {
+            lines.forEach(line => {
+                if(line.trim().length === 0) return;
+                const parts = line.split('|');
+                if(parts.length >= 3) {
+                    const q = parts[0].trim();
+                    const opts = parts[1].split(',').map(o => o.trim());
+                    const ans = parseInt(parts[2].trim()) - 1; 
+                    const exp = parts[3] ? parts[3].trim() : "Correct";
+                    if(opts.length >= 2) newList.push({ q, opts, a: ans, exp });
+                }
+            });
+
+            if(newList.length === 0) { alert("Format Error!"); return; }
+
+            const json = JSON.stringify(newList);
+            // COMPRESSION MAGIC
+            const compressed = LZString.compressToEncodedURIComponent(json);
+            
+            const baseUrl = window.location.href.split('?')[0];
+            const fullUrl = `${baseUrl}?q=${compressed}`;
+            
+            // Try to shorten (Optional) or just use compressed URL
+            const btn = document.getElementById('genBtn');
+            btn.innerHTML = '<span class="loader"></span> Making Short Link...';
+            btn.disabled = true;
+
+            let finalLinkToShow = fullUrl;
+
+            try {
+                // Using TinyURL via Proxy (Might fail on local, works on Netlify)
+                if(window.location.protocol !== 'file:') {
+                    const apiUrl = `https://tinyurl.com/api-create.php?url=${encodeURIComponent(fullUrl)}`;
+                    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
+                    const res = await fetch(proxyUrl);
+                    if(res.ok) finalLinkToShow = await res.text();
+                }
+            } catch(e) { console.log("Shortener failed, using long link"); }
+
+            document.getElementById('shortLinkArea').style.display = "block";
+            const finalLinkEl = document.getElementById('finalLink');
+            finalLinkEl.href = finalLinkToShow;
+            finalLinkEl.innerText = finalLinkToShow;
+            
+            document.getElementById('waShareBtn').style.display = "block";
+            btn.innerHTML = "✅ Link Ready!"; btn.disabled = false;
+
+        } catch(e) { alert("Format Error!"); }
+    }
+
+    function shareLinkOnWa() {
+        const url = document.getElementById('finalLink').href;
+        const msg = `*🇬🇧 English Quiz!* %0A Click here to play: %0A ${url}`;
+        window.open(`https://wa.me/?text=${msg}`, '_blank');
+    }
+
+    // --- CANVAS ---
+    function downloadStatus() {
+        const cvs = document.getElementById('statusCanvas');
+        const ctx = cvs.getContext('2d');
+        const W = 720, H = 1280;
+        ctx.fillStyle = "#16222A"; ctx.fillRect(0,0,W,H);
+        
+        ctx.fillStyle = "#FFD700"; ctx.font = "bold 50px Arial"; ctx.textAlign="center";
+        ctx.fillText("SHRI GAYATRI SANSKAAR", W/2, 100);
+        ctx.fillStyle = "#fff"; ctx.font = "30px Arial"; ctx.fillText("PUBLIC SCHOOL", W/2, 150);
+
+        ctx.save(); ctx.beginPath(); ctx.arc(W/2, 450, 150, 0, Math.PI*2); ctx.clip();
+        if(playerImgObj.src) ctx.drawImage(playerImgObj, W/2-150, 300, 300, 300);
+        else { ctx.fillStyle="#444"; ctx.fill(); }
+        ctx.restore();
+        ctx.strokeStyle = "#FFD700"; ctx.lineWidth=10; ctx.stroke();
+
+        ctx.fillStyle = "#fff"; ctx.font = "bold 60px Arial"; ctx.fillText(player.name.toUpperCase(), W/2, 680);
+        ctx.fillStyle = "#FFD700"; ctx.font = "bold 120px Arial"; ctx.fillText(score+"/"+quizData.length, W/2, 850);
+        
+        ctx.fillStyle = "#fff"; ctx.fillRect(0, H-150, W, 150);
+        ctx.fillStyle = "#d32f2f"; ctx.font = "bold 45px Arial"; ctx.fillText("ADMISSIONS OPEN", W/2, H-90);
+
+        const link = document.createElement('a');
+        link.download = `Status_${player.name}.png`;
+        link.href = cvs.toDataURL();
+        link.click();
+    }
+    function sendReport() { window.open(`https://wa.me/?text=Score: ${score}/${quizData.length} by ${player.name}`, '_blank'); }
+</script>
+</body>
+</html>
