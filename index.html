@@ -2,360 +2,534 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Guru - No Server</title>
-    <!-- LZ-String for Link Compression (To make links shorter) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Live Class Monitor - Tech By Ashish Sir</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
     <style>
-        /* --- THEME --- */
-        :root { --primary: #00d2ff; --secondary: #3a7bd5; --dark: #16222A; --gold: #FFD700; }
-        body {
-            background: linear-gradient(135deg, #16222A 0%, #3A6073 100%);
-            color: white; font-family: 'Poppins', sans-serif;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; margin: 0; user-select: none;
-        }
-
-        .container {
-            width: 100%; max-width: 500px;
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px; padding: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            position: relative; max-height: 95vh; overflow-y: auto;
-        }
-
-        /* HEADER */
-        .school-name {
-            font-family: 'Cinzel', serif; font-size: 18px; font-weight: 900;
-            color: var(--gold); text-shadow: 0 2px 5px rgba(0,0,0,0.5); text-align: center;
-        }
-
-        /* SCREENS */
-        .screen { display: none; animation: fadeIn 0.4s ease; }
-        .screen.active { display: block; }
-        @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-
-        /* BUTTONS & INPUTS */
-        input, textarea {
-            width: 90%; padding: 12px; margin: 5px 0;
-            background: rgba(0,0,0,0.3); border: 1px solid #555;
-            color: white; border-radius: 8px; text-align: center; font-family: inherit;
-        }
+        :root { --primary: #1565C0; --danger: #D32F2F; --success: #2E7D32; --dark: #121212; --gold: #FFD700; --bg: #f4f7f6; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        body { background: var(--bg); color: #333; font-family: 'Poppins', sans-serif; display: flex; justify-content: center; min-height: 100vh; margin: 0; }
+        .container { width: 100%; max-width: 480px; background: #fff; padding: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1); min-height: 100vh; display: flex; flex-direction: column; }
+        .header { background: var(--primary); color: white; padding: 15px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; box-shadow: 0 4px 15px rgba(21, 101, 192, 0.3); }
+        .school-name { font-family: 'Cinzel', serif; font-size: 15px; font-weight: bold; color: var(--gold); }
         
-        .btn {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            border: none; padding: 12px; width: 100%;
-            color: white; border-radius: 50px; font-weight: bold; font-size: 16px;
-            cursor: pointer; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,114,255,0.3);
-            transition: 0.2s;
-        }
-        .btn-green { background: #00e676; color: #004d40; }
-        .btn-red { background: #ff1744; color: white; margin-top:5px; padding:8px; font-size:12px;}
+        /* Screens */
+        .screen { display: none; padding: 20px; flex-grow: 1; flex-direction: column; }
+        .active-screen { display: flex; }
 
-        /* ADMIN AREA */
-        .bulk-box {
-            width: 95%; height: 120px; background: #111; color: #00e676;
-            font-family: monospace; font-size: 11px; padding: 10px;
-            border: 1px solid #333; text-align: left; resize: vertical;
-        }
+        input { width: 100%; padding: 14px; margin: 8px 0; border: 2px solid #ddd; border-radius: 12px; font-size: 16px; text-align: center; outline: none; transition: 0.3s; background: #fafafa; }
+        input:focus { border-color: var(--primary); background: #fff; }
         
-        /* LINK DISPLAY */
-        .short-link-box {
-            background: #fff; color: #333; font-weight: bold;
-            padding: 15px; border-radius: 10px; margin-top: 15px;
-            border: 2px solid var(--primary); word-break: break-all;
-            display: none; text-align: center; font-size: 12px;
-        }
+        .btn-main { background: var(--dark); color: white; width: 100%; padding: 15px; border: none; border-radius: 50px; font-weight: bold; font-size: 16px; margin-top: 15px; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: 0.2s; }
+        
+        /* Two Report Buttons */
+        .btn-summary { background: #E65100; color: white; width: 100%; padding: 12px; border: none; border-radius: 50px; font-weight: bold; margin-top: 15px; cursor: pointer; }
+        .btn-att-report { background: #00897B; color: white; width: 100%; padding: 12px; border: none; border-radius: 50px; font-weight: bold; margin-top: 10px; cursor: pointer; }
 
-        /* QUIZ UI */
-        .question-card {
-            background: rgba(255,255,255,0.1); padding: 15px;
-            border-radius: 10px; margin: 15px 0; border-left: 4px solid var(--primary);
-        }
-        .opt-btn {
-            width: 100%; padding: 12px; margin: 5px 0;
-            background: rgba(255,255,255,0.9); border: none; border-radius: 8px;
-            font-size: 15px; font-weight: 600; cursor: pointer; color: #333;
-            text-align: left; padding-left: 20px;
-        }
-        .opt-btn.correct { background: #00e676; color: white; }
-        .opt-btn.wrong { background: #ff1744; color: white; }
+        .btn-add { background: var(--primary); color: white; padding: 10px; border-radius: 10px; border: none; font-size: 14px; cursor: pointer; margin-bottom: 15px; width: 100%; }
 
-        /* LOADER */
-        .loader {
-            border: 3px solid #f3f3f3; border-top: 3px solid var(--primary);
-            border-radius: 50%; width: 20px; height: 20px;
-            animation: spin 1s linear infinite; display: inline-block; vertical-align: middle;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* Student List Styles */
+        .student-list-item { background: #fff; border: 1px solid #eee; padding: 15px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s; }
+        .student-list-item:active { transform: scale(0.98); background: #f0f8ff; }
+        .s-avatar { width: 40px; height: 40px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--primary); margin-right: 15px; }
+        
+        /* Attendance Button */
+        .att-btn { width: 35px; height: 35px; border-radius: 50%; border: none; font-weight: bold; color: white; cursor: pointer; margin-left: 10px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+        .att-present { background: var(--success); box-shadow: 0 2px 5px rgba(46, 125, 50, 0.3); }
+        .att-absent { background: var(--danger); box-shadow: 0 2px 5px rgba(211, 47, 47, 0.3); }
 
-        /* HIDDEN CANVAS */
-        #statusCanvas { display: none; }
+        /* Tracker Styles */
+        .profile-card { display: flex; align-items: center; background: #fff; padding: 10px; border-radius: 15px; border: 1px solid #eee; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .score-card { background: #fff; border: 2px solid #eee; border-radius: 15px; padding: 10px; text-align: center; margin-bottom: 15px; position: sticky; top: 5px; z-index: 100; box-shadow: 0 5px 10px rgba(0,0,0,0.05); }
+        .score-val { font-size: 40px; font-weight: 800; color: var(--primary); transition: 0.2s; }
+        
+        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+        .action-btn { border: none; padding: 10px; border-radius: 12px; color: white; font-weight: 600; font-size: 12px; cursor: pointer; box-shadow: 0 3px 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 75px; }
+        .btn-good { background: linear-gradient(135deg, #66BB6A, #2E7D32); }
+        .btn-bad { background: linear-gradient(135deg, #EF5350, #C62828); }
+        
+        .log-area { background: #fff; padding: 15px; border-radius: 15px; font-size: 12px; color: #555; max-height: 200px; overflow-y: auto; margin-bottom: 80px; border: 1px solid #eee; }
+        .log-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
+        .log-bad { color: var(--danger); font-weight: bold; }
+        .log-good { color: var(--success); font-weight: bold; }
+        .status-pulse { width: 10px; height: 10px; background: red; border-radius: 50%; display: inline-block; margin-right: 5px; }
+        .online { background: #00e676; box-shadow: 0 0 10px #00e676; }
+        
+        .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); display: flex; justify-content: center; z-index: 200; }
+        .btn-report { background: var(--primary); color: white; padding: 12px 30px; border: none; border-radius: 50px; font-weight: bold; width: 90%; max-width: 450px; cursor: pointer; }
+        #reportCanvas { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <button onclick="toggleAdmin()" style="position:absolute; top:10px; right:10px; background:none; border:1px solid #555; color:#aaa; font-size:10px; padding:5px 10px; border-radius:15px; cursor:pointer;">⚙️ Teacher</button>
-
-        <!-- 1. LOGIN -->
-        <div id="screen-login" class="screen active" style="text-align: center;">
-            <div class="school-name">SHRI GAYATRI SANSKAAR<br>PUBLIC SCHOOL</div>
-            <h2 style="color:var(--primary); margin:5px 0;">ENGLISH GURU</h2>
-            
-            <div style="width:90px; height:90px; border-radius:50%; background:#fff; margin:0 auto 15px; overflow:hidden; border:3px solid var(--primary);">
-                <img id="previewImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" style="width:100%; height:100%; object-fit:cover;">
-            </div>
-            
-            <label style="font-size:12px; background:rgba(0,0,0,0.4); padding:8px 15px; border-radius:20px; cursor:pointer; border:1px solid var(--primary);">
-                📸 Upload Photo
-                <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="loadPhoto(this)">
-            </label>
-            <br><br>
-
-            <input type="text" id="pName" placeholder="Student Name">
-            <input type="text" id="pClass" placeholder="Class">
-            <button class="btn" onclick="startQuiz()">🚀 START QUIZ</button>
-        </div>
-
-        <!-- 2. QUIZ -->
-        <div id="screen-quiz" class="screen">
-            <div style="display:flex; justify-content:space-between; font-size:12px; color:#aaa;">
-                <span id="qCount">Q: 1/5</span>
-                <span id="timerTxt">20s</span>
-            </div>
-            <div style="height:4px; background:#333; margin:5px 0; border-radius:2px;">
-                <div id="timerBar" style="height:100%; width:100%; background:var(--primary); transition:width 1s linear;"></div>
-            </div>
-
-            <div class="question-card">
-                <span style="font-size:10px; color:#aaa;">QUESTION:</span><br>
-                <span id="qText" style="font-size:18px; font-weight:bold;">Loading...</span>
-                <button onclick="speakText()" style="background:none; border:none; color:var(--primary); cursor:pointer; font-size:18px;">🔊</button>
-            </div>
-
-            <div id="optBox"></div>
-        </div>
-
-        <!-- 3. RESULT -->
-        <div id="screen-result" class="screen" style="text-align: center;">
-            <div class="school-name">RESULT CARD</div>
-            <h1 id="finalScore" style="font-size:60px; color:var(--gold); margin:10px 0;">0/0</h1>
-            <p id="feedbackMsg" style="font-size:14px;">Great Job!</p>
-
-            <button class="btn" style="background:linear-gradient(45deg, #FFD700, #FFA500); color:black;" onclick="downloadStatus()">⬇️ Download Status</button>
-            <button class="btn btn-green" onclick="sendReport()">📲 Send to Teacher</button>
-            
-            <button class="btn" style="background:333; margin-top:15px;" onclick="location.reload()">↺ Play Again</button>
-        </div>
-
-        <!-- 4. ADMIN SCREEN -->
-        <div id="screen-admin" class="screen">
-            <h3 style="color:var(--gold); text-align:center;">🛠️ TEACHER'S PANEL</h3>
-            <p style="font-size:11px; text-align:center; color:#aaa;">Paste Questions & Get Magic Link</p>
-
-            <div style="font-size:10px; color:#aaa; margin-bottom:5px; background:rgba(0,0,0,0.3); padding:5px;">
-                Format: <b>Question | A,B,C,D | Ans(1-4) | Exp</b>
-            </div>
-
-            <textarea id="bulkInput" class="bulk-box" placeholder="What is red? | Apple,Sky,Grass,Sea | 1 | Apple is red."></textarea>
-
-            <button id="genBtn" class="btn btn-green" onclick="generateCompressedLink()">🔗 Generate Magic Link</button>
-            
-            <div id="shortLinkArea" class="short-link-box">
-                <span style="font-size:12px; color:#555;">SHARE THIS LINK:</span><br>
-                <a id="finalLink" href="#" target="_blank" style="color:#0072ff; text-decoration:none; font-size:14px;">...</a>
-            </div>
-            
-            <button id="waShareBtn" class="btn" style="display:none; background:#25D366;" onclick="shareLinkOnWa()">📲 Share Link on WhatsApp</button>
-            <button class="btn" style="background:#ff1744; margin-top:15px;" onclick="toggleAdmin()">❌ Close</button>
+<div class="container">
+    <div class="header">
+        <div style="width:100%">
+            <div class="school-name">SHRI GAYATRI SANSKAAR</div>
+            <div style="font-size:10px;">🔐 SECURE TEACHER PORTAL</div>
         </div>
     </div>
 
-    <canvas id="statusCanvas" width="720" height="1280"></canvas>
+    <div id="screen-login" class="screen active-screen" style="justify-content: center; text-align: center;">
+        <h4 style="color:#555; margin-top: 15px;">Teacher Login</h4>
+        <input type="text" id="tName" placeholder="Your Name (e.g. Rina Ma'am)">
+        
+        <h4 style="margin-top:10px; color:#555;">Select Class</h4>
+        <input type="text" id="tClass" placeholder="Class (e.g. 5th)">
+        
+        <h4 style="margin-top:10px; color:#555;">Security</h4>
+        <input type="password" id="tPin" placeholder="Enter PIN">
+        
+        <button class="btn-main" onclick="teacherLogin()">LOGIN TO CLASS</button>
+        <p style="font-size:10px; color:#999; margin-top:15px;">One-time login per session.</p>
+    </div>
 
-<script>
-    // --- VARIABLES ---
-    let defaultData = [{"q":"Welcome! Click Start.","opts":["Start","Wait","Exit","Stop"],"a":0,"exp":"Welcome"}];
-    let quizData = [];
-    let currIdx=0, score=0, timer=20, interval, player={};
-    let playerImgObj = new Image();
+    <div id="screen-dashboard" class="screen">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h4 style="margin:0; color:#333;">Class: <span id="dashClassName" style="color:var(--primary)">--</span></h4>
+            <button onclick="logout()" style="background:#ddd; border:none; padding:5px 10px; border-radius:10px; font-size:12px;">Logout</button>
+        </div>
 
-    // --- INIT (Read Compressed Data from URL) ---
-    window.onload = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const encodedData = urlParams.get('q'); // 'q' for query/quiz
-        if(encodedData) {
-            try { 
-                // Decompress Data
-                const json = LZString.decompressFromEncodedURIComponent(encodedData);
-                quizData = JSON.parse(json); 
-            } 
-            catch(e) { console.error(e); quizData = defaultData; }
-        } else { quizData = defaultData; }
+        <button class="btn-add" onclick="addNewStudent()">➕ Add New Student to this Class</button>
+        
+        <div id="studentListContainer" style="overflow-y:auto; flex-grow:1;">
+            <p style="text-align:center; color:#999;">Loading students...</p>
+        </div>
+
+        <button class="btn-summary" onclick="generateClassSummary()">📢 PERFORMANCE REPORT</button>
+        <button class="btn-att-report" onclick="generateAttendanceReport()">📋 ATTENDANCE REPORT</button>
+    </div>
+
+    <div id="screen-tracker" class="screen" style="position:relative;">
+        <div style="text-align:right; margin-bottom:5px; display:flex; justify-content:space-between; align-items:center;">
+            <button onclick="backToDashboard()" style="padding:6px 15px; background:#444; color:white; border:none; border-radius:15px; font-size:12px;">⬅ Back</button>
+            <div>
+                <span id="liveIndicator" class="status-pulse"></span> <span style="font-size:10px; color:#777;">LIVE</span>
+            </div>
+        </div>
+
+        <div class="profile-card">
+            <div class="s-avatar" id="initialsAvatar" style="background:#eee; border:2px solid #1565C0;">--</div>
+            <div>
+                <div class="p-name" id="dispName">--</div>
+                <div style="font-size:12px; color:#777;" id="dispClass">--</div>
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div style="font-size:10px; color:#aaa; letter-spacing:1px;">LIVE SCORE</div>
+            <div id="scoreDisplay" class="score-val">...</div>
+        </div>
+
+        <h5 style="margin: 5px 0; color:#D32F2F;">🚫 Bad Behavior (Cut Marks)</h5>
+        <div class="grid-container">
+            <button class="action-btn btn-bad" onclick="updateLiveScore(-10, 'Talking')">🗣️ Talking<br>(-10)</button>
+            <button class="action-btn btn-bad" onclick="updateLiveScore(-15, 'No Homework')">📚 No HW<br>(-15)</button>
+            <button class="action-btn btn-bad" onclick="updateLiveScore(-20, 'Fighting')">👊 Fighting<br>(-20)</button>
+            <button class="action-btn btn-bad" onclick="updateLiveScore(-20, 'Bad Behav.')">😈 Bad Behav.<br>(-20)</button>
+        </div>
+
+        <h5 style="margin: 5px 0; color:#2E7D32;">✅ Good Behavior (Add Marks)</h5>
+        <div class="grid-container">
+            <button class="action-btn btn-good" onclick="updateLiveScore(5, 'Best Ans')">🙋 Best Ans<br>(+5)</button>
+            <button class="action-btn btn-good" onclick="updateLiveScore(5, 'Helping')">🤝 Helping<br>(+5)</button>
+            <button class="action-btn btn-good" onclick="updateLiveScore(5, 'Quiet')">🤫 Quiet<br>(+5)</button>
+            <button class="action-btn btn-good" onclick="updateLiveScore(10, 'Outstanding')">🌟 Super<br>(+10)</button>
+        </div>
+
+        <div class="log-area" id="logList">Loading History...</div>
+    </div>
+
+    <div class="bottom-bar" id="bottomNav" style="display:none;">
+        <button class="btn-report" onclick="generateReport()">📑 SINGLE STUDENT REPORT</button>
+    </div>
+</div>
+
+<canvas id="reportCanvas" width="800" height="1200"></canvas>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getDatabase, ref, set, onValue, update, push, get, child } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyA43-vMdUK3jtsTOzwHhe8QDjJzatpekgM",
+        authDomain: "schoolmonitor-6aa3d.firebaseapp.com",
+        databaseURL: "https://schoolmonitor-6aa3d-default-rtdb.firebaseio.com",
+        projectId: "schoolmonitor-6aa3d",
+        storageBucket: "schoolmonitor-6aa3d.firebasestorage.app",
+        messagingSenderId: "303795138626",
+        appId: "1:303795138626:web:2317ab227f81ce32d2bddb"
     };
 
-    function loadPhoto(input) {
-        if(input.files && input.files[0]) {
-            const src = URL.createObjectURL(input.files[0]);
-            document.getElementById('previewImg').src = src;
-            playerImgObj.src = src;
-        }
+    let app, db;
+    try { app = initializeApp(firebaseConfig); db = getDatabase(app); } catch(e) { console.error(e); }
+
+    let currentID = null;
+    let studentData = { score: 100, logs: {}, att: 'P' }; 
+    let teacherName = "";
+    let currentClass = "";
+    // UPDATED PIN
+    const TEACHER_PIN = "5114"; 
+
+    // --- 1. TEACHER LOGIN ---
+    window.teacherLogin = function() {
+        let pin = document.getElementById('tPin').value;
+        if (pin !== TEACHER_PIN) { alert("❌ Wrong PIN! Access Denied."); return; }
+
+        teacherName = document.getElementById('tName').value;
+        currentClass = document.getElementById('tClass').value.trim();
+
+        if(!teacherName || !currentClass) { alert("Please enter Name and Class"); return; }
+
+        document.getElementById('screen-login').classList.remove('active-screen');
+        document.getElementById('screen-dashboard').classList.add('active-screen');
+        document.getElementById('dashClassName').innerText = currentClass.toUpperCase();
+        loadClassStudents();
     }
 
-    // --- QUIZ LOGIC ---
-    function startQuiz() {
-        player.name = document.getElementById('pName').value;
-        player.class = document.getElementById('pClass').value;
-        if(!player.name) { alert("Enter Name"); return; }
-        document.getElementById('screen-login').classList.remove('active');
-        document.getElementById('screen-quiz').classList.add('active');
-        loadQ();
-    }
+    window.logout = function() { location.reload(); }
 
-    function loadQ() {
-        if(currIdx >= quizData.length) { showResult(); return; }
-        const data = quizData[currIdx];
-        document.getElementById('qText').innerText = data.q;
-        document.getElementById('qCount').innerText = `Q: ${currIdx+1}/${quizData.length}`;
-        const box = document.getElementById('optBox');
-        box.innerHTML = "";
-        data.opts.forEach((o, i) => { box.innerHTML += `<button class="opt-btn" onclick="checkAns(${i})">${o}</button>`; });
-        timer=20; clearInterval(interval);
-        document.getElementById('timerBar').style.width="100%";
-        interval = setInterval(() => {
-            timer--;
-            document.getElementById('timerTxt').innerText = timer+"s";
-            document.getElementById('timerBar').style.width=(timer/20)*100+"%";
-            if(timer<=0) { clearInterval(interval); checkAns(-1); }
-        }, 1000);
-    }
+    // --- 2. LOAD STUDENTS ---
+    function loadClassStudents() {
+        const studentListDiv = document.getElementById('studentListContainer');
+        studentListDiv.innerHTML = "<p style='text-align:center; margin-top:20px; color:#777;'>Loading...</p>";
 
-    function checkAns(idx) {
-        clearInterval(interval);
-        if(idx === quizData[currIdx].a) score++;
-        currIdx++;
-        loadQ();
-    }
-
-    function speakText() {
-        const u = new SpeechSynthesisUtterance(quizData[currIdx].q);
-        u.lang = 'en-US'; window.speechSynthesis.speak(u);
-    }
-
-    function showResult() {
-        document.getElementById('screen-quiz').classList.remove('active');
-        document.getElementById('screen-result').classList.add('active');
-        document.getElementById('finalScore').innerText = `${score}/${quizData.length}`;
-    }
-
-    // --- ADMIN: GENERATE COMPRESSED LINK ---
-    function toggleAdmin() {
-        const admin = document.getElementById('screen-admin');
-        const login = document.getElementById('screen-login');
-        if(admin.classList.contains('active')) {
-            admin.classList.remove('active'); login.classList.add('active');
-        } else {
-            if(prompt("Password:") === "1234") {
-                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-                admin.classList.add('active');
+        const dbRef = ref(db, 'students');
+        onValue(dbRef, (snapshot) => {
+            const data = snapshot.val();
+            studentListDiv.innerHTML = ""; 
+            
+            if(!data) {
+                studentListDiv.innerHTML = "<p style='text-align:center; margin-top:20px;'>No students found.</p>";
+                return;
             }
+
+            let foundCount = 0;
+            let searchClass = currentClass.toLowerCase().replace(/\s/g, '');
+
+            for(let id in data) {
+                let st = data[id];
+                if(st.class && st.class.toLowerCase().replace(/\s/g, '') === searchClass) {
+                    foundCount++;
+                    let scoreColor = st.score >= 90 ? 'green' : (st.score >= 70 ? 'orange' : 'red');
+                    
+                    let attStatus = st.att || 'P'; 
+                    let attClass = attStatus === 'P' ? 'att-present' : 'att-absent';
+                    let attText = attStatus === 'P' ? 'P' : 'A';
+                    
+                    let html = `
+                    <div class="student-list-item" onclick="openStudentTracker('${id}', '${st.name}', '${st.class}')">
+                        <div style="display:flex; align-items:center;">
+                            <div class="s-avatar">${st.name.charAt(0).toUpperCase()}</div>
+                            <div>
+                                <div style="font-weight:bold; font-size:16px;">${st.name}</div>
+                                <div style="font-size:12px; color:#777;">Score: <span style="color:${scoreColor}; font-weight:bold;">${st.score}</span></div>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center;">
+                            <div style="color:#aaa; margin-right:10px;">➜</div>
+                            <button class="att-btn ${attClass}" onclick="toggleAttendance(event, '${id}', '${attStatus}')">${attText}</button>
+                        </div>
+                    </div>`;
+                    studentListDiv.innerHTML += html;
+                }
+            }
+            if(foundCount === 0) {
+                studentListDiv.innerHTML = `<p style="text-align:center; color:#777; margin-top:20px;">No students found in Class "${currentClass}".<br>Add one below!</p>`;
+            }
+        });
+    }
+
+    window.toggleAttendance = function(e, id, currentStatus) {
+        e.stopPropagation(); 
+        let newStatus = currentStatus === 'P' ? 'A' : 'P';
+        update(ref(db, 'students/' + id), { att: newStatus });
+    }
+
+    // --- 3. ADD NEW STUDENT ---
+    window.addNewStudent = function() {
+        let sName = prompt("Enter New Student Name:");
+        if(!sName) return;
+        let newID = sName.toLowerCase().replace(/\s/g, '') + "-" + currentClass.toLowerCase().replace(/\s/g, '');
+        const studentRef = ref(db, 'students/' + newID);
+        get(studentRef).then((snapshot) => {
+            if(snapshot.exists()) { alert("Student already exists!"); } 
+            else {
+                set(studentRef, { name: sName, class: currentClass, score: 100, att: 'P' }).then(() => {
+                    alert(`✅ ${sName} added to ${currentClass}!`);
+                });
+            }
+        });
+    }
+
+    // --- 4. OPEN TRACKER ---
+    window.openStudentTracker = function(id, name, className) {
+        currentID = id;
+        document.getElementById('screen-dashboard').classList.remove('active-screen');
+        document.getElementById('screen-tracker').classList.add('active-screen');
+        document.getElementById('bottomNav').style.display = 'flex';
+        document.getElementById('dispName').innerText = name;
+        document.getElementById('dispClass').innerText = "Class: " + className;
+        document.getElementById('initialsAvatar').innerText = name.charAt(0).toUpperCase();
+
+        const studentRef = ref(db, 'students/' + currentID);
+        onValue(studentRef, (snapshot) => {
+            if(currentID !== id) return;
+            document.getElementById('liveIndicator').classList.add('online');
+            const data = snapshot.val();
+            if(data) {
+                studentData = data;
+                if(!studentData.logs) studentData.logs = {};
+            } else { studentData = { score: 100, logs: {}, att:'P' }; }
+            updateUI();
+        });
+    }
+
+    window.backToDashboard = function() {
+        currentID = null; 
+        document.getElementById('screen-tracker').classList.remove('active-screen');
+        document.getElementById('screen-dashboard').classList.add('active-screen');
+        document.getElementById('bottomNav').style.display = 'none';
+        document.getElementById('liveIndicator').classList.remove('online');
+    }
+
+    // --- UPDATE SCORE ---
+    window.updateLiveScore = function(points, reason) {
+        if(!currentID) return;
+        let newScore = studentData.score + points;
+        if(newScore > 100) newScore = 100;
+        if(newScore < 0) newScore = 0;
+        const studentRef = ref(db, 'students/' + currentID);
+        const logsRef = ref(db, 'students/' + currentID + '/logs');
+        update(studentRef, { score: newScore });
+        push(logsRef, {
+            r: reason, p: points, t: teacherName,
+            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+            date: new Date().toLocaleDateString()
+        });
+    }
+
+    function updateUI() {
+        const scoreDiv = document.getElementById('scoreDisplay');
+        scoreDiv.innerText = studentData.score;
+        if(studentData.score >= 90) scoreDiv.style.color = "#2E7D32"; 
+        else if(studentData.score >= 70) scoreDiv.style.color = "#F9A825"; 
+        else scoreDiv.style.color = "#D32F2F"; 
+
+        let logHTML = "";
+        let logsArr = studentData.logs ? Object.values(studentData.logs) : [];
+        let today = new Date().toLocaleDateString();
+
+        logsArr.reverse().forEach(log => {
+             let isToday = log.date === today;
+             let dateBadge = isToday ? "<span style='color:green;font-size:8px;border:1px solid green;padding:1px 3px;border-radius:4px;'>TODAY</span>" : `<span style='color:#aaa;font-size:8px;'>${log.date || ""}</span>`;
+             let typeClass = log.p > 0 ? "log-good" : "log-bad";
+             let sign = log.p > 0 ? "+" : "";
+             logHTML += `<div class="log-item ${typeClass}"><div style="width:100%"><div style="display:flex; justify-content:space-between;"><span>${log.r} (${sign}${log.p})</span>${dateBadge}</div><div style="font-size:10px; color:#555; font-weight:normal;">${log.t}</div></div></div>`;
+        });
+        document.getElementById('logList').innerHTML = logHTML || "<p style='text-align:center;color:#999'>No activity yet.</p>";
+    }
+
+    // --- 5. NEW: GENERATE ATTENDANCE ONLY REPORT (FOR PRINCIPAL) ---
+    window.generateAttendanceReport = async function() {
+        let filterClass = currentClass.toUpperCase().replace(/\s/g, '');
+        let tName = teacherName;
+        const dbRef = ref(db);
+        
+        try {
+            const snapshot = await get(child(dbRef, `students`));
+            if (snapshot.exists()) {
+                let allData = snapshot.val();
+                let today = new Date().toLocaleDateString();
+                
+                let presentCount = 0;
+                let absentList = [];
+                let totalStudents = 0;
+
+                for (let key in allData) {
+                    let st = allData[key];
+                    let cleanClass = st.class ? st.class.toUpperCase().replace(/\s/g, '') : "UNKNOWN";
+                    
+                    if (filterClass !== "" && !cleanClass.includes(filterClass)) continue;
+                    
+                    totalStudents++;
+                    if (st.att === 'A') {
+                        absentList.push(st.name);
+                    } else {
+                        presentCount++;
+                    }
+                }
+
+                if(totalStudents === 0) { alert("No students found in this class."); return; }
+
+                let reportText = `*🏫 SHRI GAYATRI SANSKAAR PUBLIC SCHOOL* \n`;
+                reportText += `*📋 DAILY ATTENDANCE REPORT* \n`;
+                reportText += `📅 Date: ${today}\n`;
+                reportText += `📂 Class: ${currentClass}\n`;
+                reportText += `----------------------------\n`;
+                reportText += `👥 Total Students: ${totalStudents}\n`;
+                reportText += `✅ Present: ${presentCount}\n`;
+                reportText += `❌ Absent: ${absentList.length}\n`;
+                reportText += `----------------------------\n`;
+
+                if(absentList.length > 0) {
+                    reportText += `*🔴 Absent Students List:*\n`;
+                    absentList.forEach((name, i) => {
+                        reportText += `${i+1}. ${name}\n`;
+                    });
+                } else {
+                    reportText += `🎉 100% Attendance Today!\n`;
+                }
+
+                reportText += `\n~ Verified by ${tName}`;
+                
+                window.location.href = `https://wa.me/?text=${encodeURIComponent(reportText)}`;
+
+            } else { alert("No data found!"); }
+        } catch (error) { console.error(error); alert("Error fetching data."); }
+    }
+
+    // --- 6. GENERATE PERFORMANCE SUMMARY ---
+    window.generateClassSummary = async function() {
+        let filterClass = currentClass.toUpperCase().replace(/\s/g, '');
+        let tName = teacherName;
+        const dbRef = ref(db);
+        
+        try {
+            const snapshot = await get(child(dbRef, `students`));
+            if (snapshot.exists()) {
+                let allData = snapshot.val();
+                let today = new Date().toLocaleDateString();
+                
+                let topStudents = []; let midStudents = []; let weakStudents = []; let absentStudents = [];
+                let hasData = false;
+
+                for (let key in allData) {
+                    let st = allData[key];
+                    let cleanClass = st.class ? st.class.toUpperCase().replace(/\s/g, '') : "UNKNOWN";
+                    if (filterClass !== "" && !cleanClass.includes(filterClass)) continue;
+                    
+                    if (st.att === 'A') {
+                        absentStudents.push({ name: st.name });
+                        hasData = true; continue;
+                    }
+
+                    let logs = st.logs ? Object.values(st.logs) : [];
+                    let todayLogs = logs.filter(l => l.date === today);
+                    let todayNet = 0; let reasonsList = ""; let hasActivity = false;
+
+                    if (todayLogs.length > 0) {
+                        todayNet = todayLogs.reduce((sum, l) => sum + l.p, 0);
+                        let reasons = todayLogs.map(l => {
+                            let pSign = l.p > 0 ? "+" : "";
+                            return `${l.r} (${pSign}${l.p})`;
+                        }).join(", ");
+                        reasonsList = reasons; hasActivity = true;
+                    }
+                    let studentObj = { name: st.name, score: st.score, reasons: reasonsList, todayNet: todayNet, hasActivity: hasActivity };
+
+                    if (st.score >= 90) topStudents.push(studentObj);
+                    else if (st.score >= 70) midStudents.push(studentObj);
+                    else weakStudents.push(studentObj);
+                    hasData = true;
+                }
+
+                if(!hasData) { alert("No students found in this class."); return; }
+
+                topStudents.sort((a,b) => b.score - a.score);
+                midStudents.sort((a,b) => b.score - a.score);
+                weakStudents.sort((a,b) => b.score - a.score);
+
+                let reportText = `*🏫 SHRI GAYATRI SANSKAAR PUBLIC SCHOOL* \n`;
+                reportText += `*📊 DAILY PERFORMANCE REPORT* \n`;
+                reportText += `📅 Date: ${today}\n`;
+                reportText += `📂 Class: ${currentClass}\n`;
+                reportText += `----------------------------\n`;
+
+                function appendListToReport(list, icon, title) {
+                    if(list.length === 0) return "";
+                    let str = `\n*${icon} ${title}*\n`;
+                    list.forEach((st, i) => {
+                        str += `*${i+1}. ${st.name}* (Score: ${st.score})\n`;
+                        if(st.hasActivity) {
+                            let netSign = st.todayNet > 0 ? "+" : "";
+                            str += `   👉 Today: ${netSign}${st.todayNet} | ${st.reasons}\n`;
+                        } else { str += `   ⚪ No Change Today\n`; }
+                    });
+                    return str;
+                }
+
+                reportText += appendListToReport(topStudents, "🏆", "STAR STUDENTS (90%+)");
+                reportText += appendListToReport(midStudents, "✨", "AVERAGE PERFORMERS (70-89%)");
+                reportText += appendListToReport(weakStudents, "⚠️", "NEEDS ATTENTION (<70%)");
+
+                if(absentStudents.length > 0) {
+                    reportText += `\n*🔴 ABSENT STUDENTS*\n`;
+                    absentStudents.forEach((st, i) => { reportText += `${i+1}. ${st.name}\n`; });
+                }
+
+                reportText += `\n----------------------------\n`;
+                reportText += `~ Generated by ${tName} | Tech by Ashish Sir`;
+                window.location.href = `https://wa.me/?text=${encodeURIComponent(reportText)}`;
+            } else { alert("No data found!"); }
+        } catch (error) { console.error(error); alert("Error fetching data."); }
+    }
+
+    // --- SINGLE REPORT ---
+    window.generateReport = function() {
+        try {
+            const cvs = document.getElementById('reportCanvas');
+            const ctx = cvs.getContext('2d');
+            const W = 800, H = 1200;
+            let sName = document.getElementById('dispName').innerText;
+            let sClass = document.getElementById('dispClass').innerText;
+            
+            let themeColor, lightTheme, statusText, badgeIcon;
+            if (studentData.score >= 90) { themeColor = "#2E7D32"; lightTheme = "#e8f5e9"; statusText = "🌟 STAR STUDENT 🌟"; badgeIcon = "🏆"; } 
+            else if (studentData.score >= 70) { themeColor = "#F9A825"; lightTheme = "#fff3e0"; statusText = "✨ GOOD EFFORT ✨"; badgeIcon = "🙂"; } 
+            else { themeColor = "#D32F2F"; lightTheme = "#ffebee"; statusText = "⚠️ NEEDS ATTENTION ⚠️"; badgeIcon = "😟"; }
+
+            ctx.fillStyle = lightTheme; ctx.fillRect(0,0,W,H);
+            ctx.fillStyle = themeColor; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(W,0); ctx.lineTo(W,280); ctx.quadraticCurveTo(W/2, 350, 0, 280); ctx.fill();
+            ctx.fillStyle = "#FFD700"; ctx.font = "bold 45px Arial"; ctx.textAlign="center"; ctx.fillText("SHRI GAYATRI SANSKAAR", W/2, 100);
+            ctx.fillStyle = "#fff"; ctx.font = "30px Arial"; ctx.fillText("PUBLIC SCHOOL", W/2, 150);
+            
+            ctx.beginPath(); ctx.arc(W/2, 380, 90, 0, Math.PI*2); ctx.fillStyle = "#fff"; ctx.fill();
+            ctx.fillStyle = themeColor; ctx.font = "bold 100px Arial"; ctx.fillText(sName.charAt(0).toUpperCase(), W/2, 415);
+            ctx.beginPath(); ctx.arc(W/2, 380, 90, 0, Math.PI*2); ctx.strokeStyle = themeColor; ctx.lineWidth=8; ctx.stroke();
+
+            ctx.fillStyle = "#333"; ctx.font = "bold 50px Arial"; ctx.fillText(sName.toUpperCase(), W/2, 530);
+            ctx.font = "30px Arial"; ctx.fillStyle = "#555"; ctx.fillText(`${sClass} | Date: ${new Date().toLocaleDateString()}`, W/2, 580);
+
+            ctx.beginPath(); ctx.arc(W/2, 750, 130, 0, Math.PI*2); ctx.fillStyle = themeColor; ctx.fill();
+            ctx.beginPath(); ctx.arc(W/2, 750, 120, 0, Math.PI*2); ctx.fillStyle = "#fff"; ctx.fill();
+            ctx.fillStyle = themeColor; ctx.font = "bold 110px Arial"; ctx.fillText(studentData.score + "%", W/2, 770);
+            ctx.font = "30px Arial"; ctx.fillText(badgeIcon, W/2, 830);
+            ctx.fillStyle = themeColor; ctx.font = "bold 40px Arial"; ctx.fillText(statusText, W/2, 930);
+
+            ctx.fillStyle = themeColor; ctx.fillRect(0, H-120, W, 120);
+            ctx.fillStyle = "#fff"; ctx.font = "25px Arial"; ctx.fillText(`Teacher: ${teacherName}`, W/2, H-70);
+
+            const link = document.createElement('a');
+            link.download = `Report_${sName}.png`;
+            link.href = cvs.toDataURL();
+            link.click();
+
+            let logsArr = studentData.logs ? Object.values(studentData.logs) : [];
+            let today = new Date().toLocaleDateString();
+            let todaysLogs = logsArr.filter(log => log.date === today);
+            let detailsList = todaysLogs.map(l => `${l.p>0?'✅':'❌'} ${l.r} (${l.p})`).join("\n") || "No activity today.";
+            
+            setTimeout(() => {
+                let waMsg = `*🏫 SHRI GAYATRI SANSKAAR PUBLIC SCHOOL*\n\n*${statusText}*\nStudent: ${sName}\nScore: ${studentData.score}/100\n----------------\nToday:\n${detailsList}\n----------------`;
+                window.location.href = `https://wa.me/?text=${encodeURIComponent(waMsg)}`;
+            }, 1000);
+        } catch(e) { 
+            console.error(e);
+            alert("Report error. Please reload and try again."); 
         }
     }
-
-    async function generateCompressedLink() {
-        const rawText = document.getElementById('bulkInput').value.trim();
-        if(!rawText) { alert("Paste questions first!"); return; }
-
-        const lines = rawText.split('\n');
-        const newList = [];
-
-        try {
-            lines.forEach(line => {
-                if(line.trim().length === 0) return;
-                const parts = line.split('|');
-                if(parts.length >= 3) {
-                    const q = parts[0].trim();
-                    const opts = parts[1].split(',').map(o => o.trim());
-                    const ans = parseInt(parts[2].trim()) - 1; 
-                    const exp = parts[3] ? parts[3].trim() : "Correct";
-                    if(opts.length >= 2) newList.push({ q, opts, a: ans, exp });
-                }
-            });
-
-            if(newList.length === 0) { alert("Format Error!"); return; }
-
-            const json = JSON.stringify(newList);
-            // COMPRESSION MAGIC
-            const compressed = LZString.compressToEncodedURIComponent(json);
-            
-            const baseUrl = window.location.href.split('?')[0];
-            const fullUrl = `${baseUrl}?q=${compressed}`;
-            
-            // Try to shorten (Optional) or just use compressed URL
-            const btn = document.getElementById('genBtn');
-            btn.innerHTML = '<span class="loader"></span> Making Short Link...';
-            btn.disabled = true;
-
-            let finalLinkToShow = fullUrl;
-
-            try {
-                // Using TinyURL via Proxy (Might fail on local, works on Netlify)
-                if(window.location.protocol !== 'file:') {
-                    const apiUrl = `https://tinyurl.com/api-create.php?url=${encodeURIComponent(fullUrl)}`;
-                    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
-                    const res = await fetch(proxyUrl);
-                    if(res.ok) finalLinkToShow = await res.text();
-                }
-            } catch(e) { console.log("Shortener failed, using long link"); }
-
-            document.getElementById('shortLinkArea').style.display = "block";
-            const finalLinkEl = document.getElementById('finalLink');
-            finalLinkEl.href = finalLinkToShow;
-            finalLinkEl.innerText = finalLinkToShow;
-            
-            document.getElementById('waShareBtn').style.display = "block";
-            btn.innerHTML = "✅ Link Ready!"; btn.disabled = false;
-
-        } catch(e) { alert("Format Error!"); }
-    }
-
-    function shareLinkOnWa() {
-        const url = document.getElementById('finalLink').href;
-        const msg = `*🇬🇧 English Quiz!* %0A Click here to play: %0A ${url}`;
-        window.open(`https://wa.me/?text=${msg}`, '_blank');
-    }
-
-    // --- CANVAS ---
-    function downloadStatus() {
-        const cvs = document.getElementById('statusCanvas');
-        const ctx = cvs.getContext('2d');
-        const W = 720, H = 1280;
-        ctx.fillStyle = "#16222A"; ctx.fillRect(0,0,W,H);
-        
-        ctx.fillStyle = "#FFD700"; ctx.font = "bold 50px Arial"; ctx.textAlign="center";
-        ctx.fillText("SHRI GAYATRI SANSKAAR", W/2, 100);
-        ctx.fillStyle = "#fff"; ctx.font = "30px Arial"; ctx.fillText("PUBLIC SCHOOL", W/2, 150);
-
-        ctx.save(); ctx.beginPath(); ctx.arc(W/2, 450, 150, 0, Math.PI*2); ctx.clip();
-        if(playerImgObj.src) ctx.drawImage(playerImgObj, W/2-150, 300, 300, 300);
-        else { ctx.fillStyle="#444"; ctx.fill(); }
-        ctx.restore();
-        ctx.strokeStyle = "#FFD700"; ctx.lineWidth=10; ctx.stroke();
-
-        ctx.fillStyle = "#fff"; ctx.font = "bold 60px Arial"; ctx.fillText(player.name.toUpperCase(), W/2, 680);
-        ctx.fillStyle = "#FFD700"; ctx.font = "bold 120px Arial"; ctx.fillText(score+"/"+quizData.length, W/2, 850);
-        
-        ctx.fillStyle = "#fff"; ctx.fillRect(0, H-150, W, 150);
-        ctx.fillStyle = "#d32f2f"; ctx.font = "bold 45px Arial"; ctx.fillText("ADMISSIONS OPEN", W/2, H-90);
-
-        const link = document.createElement('a');
-        link.download = `Status_${player.name}.png`;
-        link.href = cvs.toDataURL();
-        link.click();
-    }
-    function sendReport() { window.open(`https://wa.me/?text=Score: ${score}/${quizData.length} by ${player.name}`, '_blank'); }
 </script>
+
 </body>
 </html>
