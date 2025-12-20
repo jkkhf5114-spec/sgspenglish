@@ -5,55 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SGS School Monitor</title>
     
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #1565C0; --danger: #D32F2F; --success: #2E7D32; --dark: #121212; --gold: #FFD700; --bg: #f4f7f6; --pink: #e91e63; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body { background: var(--bg); color: #333; font-family: 'Poppins', sans-serif; display: flex; justify-content: center; min-height: 100vh; margin: 0; overflow-x: hidden; }
+        .container { width: 100%; max-width: 480px; background: #fff; min-height: 100vh; display: flex; flex-direction: column; position: relative; }
         
-        /* --- STABLE SPLASH SCREEN --- */
+        /* SPLASH SCREEN */
         #splash-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 9999;
+            transition: opacity 0.6s ease;
         }
-        .splash-logo-box { 
-            width: 180px; height: 180px; 
-            border-radius: 50%; 
-            border: 4px solid var(--pink); 
-            margin-bottom: 20px;
-            display: flex; align-items: center; justify-content: center;
-            background: #fff; overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .splash-logo-box img { width: 90%; height: auto; }
-        .splash-title { font-family: 'Cinzel', serif; font-size: 18px; color: var(--primary); font-weight: bold; text-align: center; padding: 0 10px; }
-        .splash-tagline { font-size: 15px; color: var(--pink); font-weight: 600; margin-top: 10px; letter-spacing: 1px; }
-
-        .container { width: 100%; max-width: 480px; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.1); min-height: 100vh; display: flex; flex-direction: column; position: relative; }
-        .header { background: var(--primary); color: white; padding: 15px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
-        .school-name { font-family: 'Cinzel', serif; font-size: 15px; font-weight: bold; color: var(--gold); }
+        .splash-logo-box { width: 180px; height: 180px; border-radius: 50%; border: 4px solid var(--pink); margin-bottom: 20px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff; }
+        .splash-logo-box img { width: 100%; height: 100%; object-fit: cover; }
         
+        .splash-title { font-family: 'Cinzel', serif; font-size: 18px; color: var(--primary); font-weight: bold; text-align: center; }
+        .splash-tagline { font-size: 15px; color: var(--pink); font-weight: 600; margin-top: 10px; }
+
+        .header { background: var(--primary); color: white; padding: 15px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
         .screen { display: none; padding: 20px; flex-grow: 1; flex-direction: column; }
         .active-screen { display: flex; }
-        
-        input { width: 100%; padding: 14px; margin: 8px 0; border: 2px solid #ddd; border-radius: 12px; text-align: center; font-size: 16px; background: #fafafa; }
-        .btn-main { background: var(--dark); color: white; width: 100%; padding: 15px; border: none; border-radius: 50px; font-weight: bold; font-size: 16px; margin-top: 15px; cursor: pointer; }
-        
-        /* Dashboard & List */
-        .student-item { background: #fff; border: 1px solid #eee; padding: 15px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .score-val { font-size: 40px; font-weight: 800; color: var(--primary); text-align: center; margin: 10px 0; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
-        .act-btn { border: none; padding: 10px; border-radius: 12px; color: white; font-weight: 600; height: 70px; cursor: pointer; }
+        input { width: 100%; padding: 14px; margin: 8px 0; border: 2px solid #ddd; border-radius: 12px; text-align: center; font-size: 16px; }
+        .btn-main { background: var(--dark); color: white; width: 100%; padding: 15px; border: none; border-radius: 50px; font-weight: bold; margin-top: 15px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -61,126 +41,41 @@
 <div class="container">
     <div id="splash-screen">
         <div class="splash-logo-box">
-            <img src="https://i.ibb.co/C38rPXV/WhatsApp-Image-2025-11-29-at-12-40-11-1.jpg" alt="Logo">
+            <img src="logo.png" alt="SGS Logo">
         </div>
         <div class="splash-title">SHRI GAYATRI SANSKAAR<br>PUBLIC SCHOOL</div>
         <div class="splash-tagline">"VIDHYA DADATI VINAYAM"</div>
-        <div id="status-msg" style="margin-top:20px; font-size:10px; color:#aaa;">Starting Application...</div>
     </div>
 
     <div class="header">
-        <div class="school-name">SHRI GAYATRI SANSKAAR</div>
-        <div style="font-size:10px;">🔐 SECURE TEACHER PORTAL</div>
+        <div style="font-family: 'Cinzel', serif; font-weight: bold; color: var(--gold);">SHRI GAYATRI SANSKAAR</div>
+        <div style="font-size: 10px;">🔐 SECURE TEACHER PORTAL</div>
     </div>
 
     <div id="screen-login" class="screen active-screen" style="justify-content: center; text-align: center;">
-        <h4 style="color:#555;">Teacher Login</h4>
+        <h4>Teacher Login</h4>
         <input type="text" id="tName" placeholder="Your Name">
         <input type="text" id="tClass" placeholder="Class (e.g. 5th)">
         <input type="password" id="tPin" placeholder="Enter PIN">
         <button class="btn-main" onclick="teacherLogin()">LOGIN TO CLASS</button>
     </div>
-
-    <div id="screen-dashboard" class="screen">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-            <h4 style="margin:0;">Class: <span id="dashClassName" style="color:var(--primary)">--</span></h4>
-            <button onclick="location.reload()" style="background:#eee; border:none; padding:5px 10px; border-radius:8px; font-size:12px;">Logout</button>
-        </div>
-        <button class="btn-main" style="background:var(--primary); margin-bottom:15px;" onclick="addNewStudent()">➕ Add Student</button>
-        <div id="studentListContainer" style="overflow-y:auto; flex-grow:1;"></div>
-    </div>
-
-    <div id="screen-tracker" class="screen">
-        <button onclick="backToDashboard()" style="width:80px; background:#444; color:white; border:none; padding:8px; border-radius:10px; margin-bottom:10px;">⬅ Back</button>
-        <div class="score-val" id="scoreDisplay">...</div>
-        <div class="grid">
-            <button class="act-btn" style="background:var(--danger);" onclick="updateScore(-10, 'Talking')">🗣️ Talking</button>
-            <button class="act-btn" style="background:var(--danger);" onclick="updateScore(-15, 'No HW')">📚 No HW</button>
-            <button class="act-btn" style="background:var(--success);" onclick="updateScore(5, 'Best Ans')">🙋 Best Ans</button>
-            <button class="act-btn" style="background:var(--success);" onclick="updateScore(10, 'Super')">🌟 Super</button>
-        </div>
-        <div id="logArea" style="background:#f9f9f9; padding:10px; border-radius:10px; font-size:12px; height:150px; overflow-y:auto;"></div>
-    </div>
 </div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getDatabase, ref, set, onValue, update, push } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
-
-    // --- FORCE SPLASH EXIT LOGIC ---
-    function hideSplash() {
-        const splash = document.getElementById('splash-screen');
-        if (splash) {
-            splash.style.opacity = '0';
-            setTimeout(() => { splash.style.display = 'none'; }, 500);
-        }
-    }
-    // Splash screen hamesha 3 seconds baad hat jayega
-    window.onload = () => { setTimeout(hideSplash, 3000); };
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyA43-vMdUK3jtsTOzwHhe8QDjJzatpekgM",
-        authDomain: "schoolmonitor-6aa3d.firebaseapp.com",
-        databaseURL: "https://schoolmonitor-6aa3d-default-rtdb.firebaseio.com",
-        projectId: "schoolmonitor-6aa3d",
-        storageBucket: "schoolmonitor-6aa3d.firebasestorage.app",
-        messagingSenderId: "303795138626",
-        appId: "1:303795138626:web:2317ab227f81ce32d2bddb"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    let teacher = "", cls = "", curID = "", curData = {score: 100};
+    // Splash screen automatically 3 seconds mein hat jayega
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const splash = document.getElementById('splash-screen');
+            if(splash) { splash.style.opacity = '0'; setTimeout(() => splash.style.display = 'none', 600); }
+        }, 3000);
+    });
 
     window.teacherLogin = () => {
-        if (document.getElementById('tPin').value !== "5114") { alert("Wrong PIN!"); return; }
-        teacher = document.getElementById('tName').value;
-        cls = document.getElementById('tClass').value.trim();
-        document.getElementById('screen-login').classList.remove('active-screen');
-        document.getElementById('screen-dashboard').classList.add('active-screen');
-        document.getElementById('dashClassName').innerText = cls.toUpperCase();
-        loadStudents();
-    };
-
-    function loadStudents() {
-        onValue(ref(db, 'students'), (snap) => {
-            const data = snap.val();
-            const cont = document.getElementById('studentListContainer');
-            cont.innerHTML = "";
-            let search = cls.toLowerCase().replace(/\s/g, '');
-            for(let id in data) {
-                if(data[id].class.toLowerCase().replace(/\s/g, '') === search) {
-                    cont.innerHTML += `<div class="student-item" onclick="openTracker('${id}', '${data[id].name}')"><b>${data[id].name}</b><small>Score: ${data[id].score}</small></div>`;
-                }
-            }
-        });
-    }
-
-    window.openTracker = (id, name) => {
-        curID = id;
-        document.getElementById('screen-dashboard').classList.remove('active-screen');
-        document.getElementById('screen-tracker').classList.add('active-screen');
-        onValue(ref(db, 'students/'+id), (s) => { if(curID==id) { curData = s.val(); updateUI(); } });
-    };
-
-    window.backToDashboard = () => { curID = ""; document.getElementById('screen-tracker').classList.remove('active-screen'); document.getElementById('screen-dashboard').classList.add('active-screen'); };
-
-    window.updateScore = (p, r) => {
-        let ns = Math.max(0, Math.min(100, (curData.score || 100) + p));
-        update(ref(db, 'students/'+curID), {score: ns});
-        push(ref(db, 'students/'+curID+'/logs'), {r:r, p:p, d: new Date().toLocaleDateString()});
-    };
-
-    function updateUI() {
-        document.getElementById('scoreDisplay').innerText = curData.score;
-        let logs = curData.logs ? Object.values(curData.logs).reverse() : [];
-        document.getElementById('logArea').innerHTML = logs.map(l => `<div>${l.r} (${l.p}) - ${l.d}</div>`).join('');
-    }
-
-    window.addNewStudent = () => {
-        let n = prompt("Student Name:"); if(!n) return;
-        let id = n.toLowerCase().replace(/\s/g, '') + "-" + cls.toLowerCase().replace(/\s/g, '');
-        set(ref(db, 'students/'+id), {name:n, class:cls, score:100});
+        if(document.getElementById('tPin').value === "5114") {
+            alert("Login Successful! (Add your Firebase logic here)");
+        } else {
+            alert("Wrong PIN!");
+        }
     };
 </script>
 </body>
