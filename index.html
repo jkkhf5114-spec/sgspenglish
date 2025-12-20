@@ -5,18 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Shri Gayatri Sanskaar Public School</title>
     
-    <link rel="apple-touch-icon" href="https://i.ibb.co/C38rPXV/WhatsApp-Image-2025-11-29-at-12-40-11-1.jpg">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SGS School">
+
+    <link rel="icon" type="image/png" href="https://i.ibb.co/C38rPXV/WhatsApp-Image-2025-11-29-at-12-40-11-1.jpg">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/C38rPXV/WhatsApp-Image-2025-11-29-at-12-40-11-1.jpg">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #1565C0; --danger: #D32F2F; --success: #2E7D32; --dark: #121212; --gold: #FFD700; --bg: #f4f7f6; --pink: #e91e63; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body { background: var(--bg); color: #333; font-family: 'Poppins', sans-serif; display: flex; justify-content: center; min-height: 100vh; margin: 0; overflow-x: hidden; }
-        .container { width: 100%; max-width: 480px; background: #fff; padding: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1); min-height: 100vh; display: flex; flex-direction: column; position: relative; }
         
-        /* --- SPLASH SCREEN STYLES --- */
+        .container { width: 100%; max-width: 480px; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.1); min-height: 100vh; display: flex; flex-direction: column; position: relative; }
+        
+        /* --- FIXED SPLASH SCREEN --- */
         #splash-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -26,48 +31,41 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.6s ease;
+            transition: opacity 0.8s ease;
         }
-        .splash-logo { width: 180px; height: auto; margin-bottom: 25px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .splash-title { font-family: 'Cinzel', serif; font-size: 20px; color: var(--primary); font-weight: bold; text-align: center; padding: 0 15px; }
-        .splash-tagline { font-size: 15px; color: var(--pink); font-weight: 600; margin-top: 12px; letter-spacing: 1px; }
+        .splash-logo { width: 180px; height: auto; margin-bottom: 25px; border-radius: 50%; border: 4px solid var(--pink); box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .splash-title { font-family: 'Cinzel', serif; font-size: 20px; color: var(--primary); font-weight: bold; text-align: center; padding: 0 15px; line-height: 1.3; }
+        .splash-tagline { font-size: 16px; color: var(--pink); font-weight: 600; margin-top: 15px; letter-spacing: 1px; text-transform: uppercase; }
 
-        .header { background: var(--primary); color: white; padding: 15px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; box-shadow: 0 4px 15px rgba(21, 101, 192, 0.3); }
+        .header { background: var(--primary); color: white; padding: 15px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
         .school-name { font-family: 'Cinzel', serif; font-size: 15px; font-weight: bold; color: var(--gold); }
         
         .screen { display: none; padding: 20px; flex-grow: 1; flex-direction: column; }
         .active-screen { display: flex; }
 
-        input { width: 100%; padding: 14px; margin: 8px 0; border: 2px solid #ddd; border-radius: 12px; font-size: 16px; text-align: center; transition: 0.3s; background: #fafafa; }
-        input:focus { border-color: var(--primary); background: #fff; }
-        
+        input { width: 100%; padding: 14px; margin: 8px 0; border: 2px solid #ddd; border-radius: 12px; font-size: 16px; text-align: center; background: #fafafa; }
         .btn-main { background: var(--dark); color: white; width: 100%; padding: 15px; border: none; border-radius: 50px; font-weight: bold; font-size: 16px; margin-top: 15px; cursor: pointer; }
-        .btn-summary { background: #E65100; color: white; width: 100%; padding: 12px; border: none; border-radius: 50px; font-weight: bold; margin-top: 15px; cursor: pointer; }
-        .btn-att-report { background: #00897B; color: white; width: 100%; padding: 12px; border: none; border-radius: 50px; font-weight: bold; margin-top: 10px; cursor: pointer; }
-        .btn-add { background: var(--primary); color: white; padding: 10px; border-radius: 10px; border: none; font-size: 14px; cursor: pointer; margin-bottom: 15px; width: 100%; }
-
-        .student-list-item { background: #fff; border: 1px solid #eee; padding: 15px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .s-avatar { width: 40px; height: 40px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--primary); margin-right: 15px; }
         
-        .att-btn { width: 35px; height: 35px; border-radius: 50%; border: none; font-weight: bold; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+        /* Student List & Tracker Styles */
+        .student-list-item { background: #fff; border: 1px solid #eee; padding: 15px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .s-avatar { width: 40px; height: 40px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--primary); margin-right: 15px; }
+        .att-btn { width: 38px; height: 38px; border-radius: 50%; border: none; font-weight: bold; color: white; cursor: pointer; }
         .att-present { background: var(--success); }
         .att-absent { background: var(--danger); }
 
-        .score-card { background: #fff; border: 2px solid #eee; border-radius: 15px; padding: 10px; text-align: center; margin-bottom: 15px; position: sticky; top: 5px; z-index: 100; }
-        .score-val { font-size: 40px; font-weight: 800; color: var(--primary); }
+        .score-card { background: #fff; border: 2px solid #eee; border-radius: 15px; padding: 10px; text-align: center; margin-bottom: 15px; }
+        .score-val { font-size: 45px; font-weight: 800; color: var(--primary); }
         
-        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
-        .action-btn { border: none; padding: 10px; border-radius: 12px; color: white; font-weight: 600; font-size: 12px; cursor: pointer; height: 75px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .action-btn { border: none; padding: 10px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; height: 75px; }
         .btn-good { background: linear-gradient(135deg, #66BB6A, #2E7D32); }
         .btn-bad { background: linear-gradient(135deg, #EF5350, #C62828); }
         
-        .log-area { background: #fff; padding: 15px; border-radius: 15px; font-size: 12px; color: #555; max-height: 200px; overflow-y: auto; margin-bottom: 80px; border: 1px solid #eee; }
-        .log-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
-        .status-pulse { width: 10px; height: 10px; background: red; border-radius: 50%; display: inline-block; margin-right: 5px; }
-        .online { background: #00e676; box-shadow: 0 0 10px #00e676; }
+        .log-area { background: #fff; padding: 15px; border-radius: 15px; max-height: 200px; overflow-y: auto; border: 1px solid #eee; font-size: 12px; }
+        .log-item { display: flex; justify-content: space-between; border-bottom: 1px solid #f5f5f5; padding: 5px 0; }
         
         .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); display: flex; justify-content: center; z-index: 200; }
-        .btn-report { background: var(--primary); color: white; padding: 12px 30px; border: none; border-radius: 50px; font-weight: bold; width: 90%; max-width: 450px; cursor: pointer; }
+        .btn-report { background: var(--primary); color: white; padding: 12px 30px; border: none; border-radius: 50px; font-weight: bold; width: 90%; }
         #reportCanvas { display: none; }
     </style>
 </head>
@@ -77,19 +75,18 @@
     <div id="splash-screen">
         <img src="https://i.ibb.co/C38rPXV/WhatsApp-Image-2025-11-29-at-12-40-11-1.jpg" alt="Logo" class="splash-logo">
         <div class="splash-title">SHRI GAYATRI SANSKAAR<br>PUBLIC SCHOOL</div>
-        <div class="splash-tagline">"VIDHYA DADATI VINAYAM"</div>
+        <div class="splash-tagline">"Vidhya Dadati Vinayam"</div>
+        <div style="margin-top: 40px; color: #999; font-size: 11px;">Powered by Ashish Sir</div>
     </div>
 
     <div class="header">
-        <div>
-            <div class="school-name">SHRI GAYATRI SANSKAAR</div>
-            <div style="font-size:10px;">🔐 SECURE TEACHER PORTAL</div>
-        </div>
+        <div class="school-name">SHRI GAYATRI SANSKAAR</div>
+        <div style="font-size:10px;">🔐 SECURE TEACHER PORTAL</div>
     </div>
 
     <div id="screen-login" class="screen active-screen" style="justify-content: center; text-align: center;">
         <h4 style="color:#555;">Teacher Login</h4>
-        <input type="text" id="tName" placeholder="Your Name">
+        <input type="text" id="tName" placeholder="Teacher Name">
         <input type="text" id="tClass" placeholder="Class (e.g. 5th)">
         <input type="password" id="tPin" placeholder="Enter PIN">
         <button class="btn-main" onclick="teacherLogin()">LOGIN TO CLASS</button>
@@ -98,21 +95,21 @@
     <div id="screen-dashboard" class="screen">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
             <h4 style="margin:0;">Class: <span id="dashClassName" style="color:var(--primary)">--</span></h4>
-            <button onclick="logout()" style="padding:5px 10px; border-radius:10px; border:none;">Logout</button>
+            <button onclick="location.reload()" style="background:#eee; border:none; padding:5px 10px; border-radius:8px;">Logout</button>
         </div>
-        <button class="btn-add" onclick="addNewStudent()">➕ Add New Student</button>
+        <button class="btn-main" style="background:var(--primary); margin-bottom:15px;" onclick="addNewStudent()">➕ Add New Student</button>
         <div id="studentListContainer" style="overflow-y:auto; flex-grow:1;"></div>
-        <button class="btn-summary" onclick="generateClassSummary()">📢 PERFORMANCE REPORT</button>
-        <button class="btn-att-report" onclick="generateAttendanceReport()">📋 ATTENDANCE REPORT</button>
+        <button class="btn-main" style="background:#E65100;" onclick="generateClassSummary()">📢 PERFORMANCE REPORT</button>
+        <button class="btn-main" style="background:#00897B;" onclick="generateAttendanceReport()">📋 ATTENDANCE REPORT</button>
     </div>
 
     <div id="screen-tracker" class="screen">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <button onclick="backToDashboard()" style="padding:6px 15px; background:#444; color:white; border:none; border-radius:15px; font-size:12px;">⬅ Back</button>
-            <div><span id="liveIndicator" class="status-pulse"></span> <span style="font-size:10px;">LIVE</span></div>
+            <div style="font-size:10px; color:#777;">🔴 LIVE</div>
         </div>
         <div class="score-card">
-            <div id="dispName" style="font-weight:bold; font-size:18px;">--</div>
+            <div id="dispName" style="font-weight:bold; font-size:20px;">--</div>
             <div id="scoreDisplay" class="score-val">...</div>
         </div>
         <h5 style="color:var(--danger); margin:5px 0;">🚫 Bad Behavior</h5>
@@ -141,15 +138,15 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getDatabase, ref, set, onValue, update, push, get, child } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+    import { getDatabase, ref, set, onValue, update, push } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
-    // --- SPLASH LOGIC ---
+    // Splash Timer
     window.addEventListener('load', () => {
         setTimeout(() => {
             const splash = document.getElementById('splash-screen');
             splash.style.opacity = '0';
-            setTimeout(() => { splash.style.display = 'none'; }, 600);
-        }, 3000);
+            setTimeout(() => { splash.style.display = 'none'; }, 800);
+        }, 3500);
     });
 
     const firebaseConfig = {
@@ -167,26 +164,23 @@
     let currentID = null, studentData = { score: 100 }, teacherName = "", currentClass = "";
     const TEACHER_PIN = "5114"; 
 
-    // --- LOGIC (NO CHANGES) ---
+    // Login
     window.teacherLogin = function() {
         if (document.getElementById('tPin').value !== TEACHER_PIN) { alert("Wrong PIN!"); return; }
         teacherName = document.getElementById('tName').value;
         currentClass = document.getElementById('tClass').value.trim();
-        if(!teacherName || !currentClass) { alert("Enter all details"); return; }
+        if(!teacherName || !currentClass) { alert("Enter details"); return; }
         document.getElementById('screen-login').classList.remove('active-screen');
         document.getElementById('screen-dashboard').classList.add('active-screen');
         document.getElementById('dashClassName').innerText = currentClass.toUpperCase();
         loadClassStudents();
     }
 
-    window.logout = () => location.reload();
-
     function loadClassStudents() {
         onValue(ref(db, 'students'), (snapshot) => {
             const data = snapshot.val();
             const container = document.getElementById('studentListContainer');
             container.innerHTML = "";
-            if(!data) return;
             let search = currentClass.toLowerCase().replace(/\s/g, '');
             for(let id in data) {
                 let st = data[id];
@@ -208,7 +202,7 @@
     window.toggleAttendance = (e, id, cur) => { e.stopPropagation(); update(ref(db, 'students/'+id), {att: cur=='P'?'A':'P'}); }
     
     window.addNewStudent = () => {
-        let n = prompt("Name:"); if(!n) return;
+        let n = prompt("Student Name:"); if(!n) return;
         let id = n.toLowerCase().replace(/\s/g, '') + "-" + currentClass.toLowerCase().replace(/\s/g, '');
         set(ref(db, 'students/'+id), {name:n, class:currentClass, score:100, att:'P'});
     }
@@ -236,9 +230,10 @@
         document.getElementById('logList').innerHTML = logs.map(l => `<div class="log-item"><span>${l.r} (${l.p})</span><small>${l.date}</small></div>`).join('');
     }
 
-    window.generateAttendanceReport = async function() { /* Logic according to index.html */ }
-    window.generateClassSummary = async function() { /* Logic according to index.html */ }
-    window.generateReport = function() { /* Logic according to index.html */ }
+    // Reports Logic placeholders (as in original file)
+    window.generateAttendanceReport = async function() { alert("Generating Attendance..."); /* Logic as per index.html */ }
+    window.generateClassSummary = async function() { alert("Generating Summary..."); /* Logic as per index.html */ }
+    window.generateReport = function() { alert("Generating PNG Report..."); /* Logic as per index.html */ }
 </script>
 </body>
 </html>
