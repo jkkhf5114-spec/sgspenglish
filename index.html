@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SGS School Monitor</title>
+    <title>SGS Monitor - Tech By Ashish Sir</title>
     
+    <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -18,32 +19,25 @@
         html, body { height: 100%; margin: 0; overflow: hidden; background: var(--bg); font-family: 'Poppins', sans-serif; }
         .container { width: 100%; max-width: 480px; background: #fff; height: 100vh; display: flex; flex-direction: column; margin: auto; position: relative; }
         
-        /* SPLASH SCREEN */
         #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.6s ease; }
-        .splash-logo { width: 180px; height: 180px; border-radius: 50%; border: 4px solid var(--pink); margin-bottom: 20px; }
+        .splash-logo { width: 160px; height: 160px; border-radius: 50%; border: 4px solid var(--pink); margin-bottom: 20px; }
 
-        /* HEADER */
         .header { background: var(--primary); color: white; padding: 15px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; flex-shrink: 0; }
-        .school-name { font-family: 'Cinzel', serif; font-weight: bold; color: var(--gold); font-size: 15px; }
+        .school-name { font-family: 'Cinzel', serif; font-weight: bold; color: var(--gold); font-size: 13px; }
 
-        /* SCREENS */
-        .screen { display: none; padding: 20px; flex-grow: 1; flex-direction: column; overflow-y: auto; padding-bottom: 80px; }
+        .screen { display: none; padding: 20px; flex-grow: 1; flex-direction: column; overflow-y: auto; padding-bottom: 100px; }
         .active-screen { display: flex; }
 
-        /* BUTTONS */
-        .btn-main { background: var(--dark); color: white; padding: 15px; border: none; border-radius: 50px; font-weight: bold; margin-top: 15px; cursor: pointer; width: 100%; }
-        .btn-report { background: #E65100; margin-top: 10px; }
-        .btn-att { background: #00897B; margin-top: 10px; }
+        input { width: 100%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid #ddd; text-align: center; }
+        .btn-main { background: var(--dark); color: white; padding: 15px; border: none; border-radius: 50px; font-weight: bold; margin-top: 10px; cursor: pointer; width: 100%; }
         
-        /* STUDENT LIST */
         .student-item { background: #fff; border: 1px solid #eee; padding: 12px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .att-dot { width: 35px; height: 35px; border-radius: 50%; border: none; color: white; font-weight: bold; cursor: pointer; }
         .p-bg { background: var(--success); } .a-bg { background: var(--danger); }
 
-        .score-val { font-size: 45px; font-weight: 800; color: var(--primary); text-align: center; margin: 10px 0; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .act-btn { border: none; border-radius: 12px; color: white; font-weight: 600; height: 70px; cursor: pointer; font-size: 12px; }
-        #logArea { margin-top: 15px; background: #f9f9f9; padding: 10px; border-radius: 10px; height: 120px; overflow-y: auto; font-size: 11px; border: 1px solid #eee; }
+        .score-val { font-size: 50px; font-weight: 800; color: var(--primary); text-align: center; margin: 5px 0; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .act-btn { border: none; border-radius: 15px; color: white; font-weight: bold; height: 75px; font-size: 13px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -51,52 +45,67 @@
 <div class="container">
     <div id="splash-screen">
         <img src="logo.png" onerror="this.src='https://via.placeholder.com/150?text=SGS+LOGO'" class="splash-logo">
-        <div style="font-family:'Cinzel'; color:var(--primary); font-weight:bold;">SHRI GAYATRI SANSKAAR</div>
+        <div style="font-family:'Cinzel'; color:var(--primary); font-weight:bold; font-size:18px; text-align:center;">SHRI GAYATRI SANSKAAR<br>PUBLIC SCHOOL</div>
         <div style="color:var(--pink); font-size:14px; margin-top:5px;">"Vidhya Dadati Vinayam"</div>
+        <div style="margin-top:20px; font-size:10px; color:#999;">Tech By Ashish Sir</div>
     </div>
 
     <div class="header">
-        <div class="school-name">SHRI GAYATRI SANSKAAR</div>
-        <div style="font-size:10px;">🔐 SECURE TEACHER PORTAL</div>
+        <div style="font-size:10px; color:#fff; margin-bottom:5px;">Tech By Ashish Sir</div>
+        <div class="school-name">SHRI GAYATRI SANSKAAR PUBLIC SCHOOL</div>
     </div>
 
     <div id="screen-login" class="screen active-screen" style="justify-content:center; text-align:center;">
-        <h4>Teacher Login</h4>
-        <input type="text" id="tName" style="width:100%; padding:12px; margin:5px 0; border-radius:10px; border:1px solid #ddd; text-align:center;" placeholder="Your Name">
-        <input type="text" id="tClass" style="width:100%; padding:12px; margin:5px 0; border-radius:10px; border:1px solid #ddd; text-align:center;" placeholder="Class (e.g. 5th)">
-        <input type="password" id="tPin" style="width:100%; padding:12px; margin:5px 0; border-radius:10px; border:1px solid #ddd; text-align:center;" placeholder="Enter PIN">
+        <h4 style="margin-bottom:20px;">Teacher Login Portal</h4>
+        <input type="text" id="tName" placeholder="Your Name">
+        <input type="text" id="tClass" placeholder="Class (e.g. 5th)">
+        <input type="password" id="tPin" placeholder="Security PIN">
         <button class="btn-main" onclick="teacherLogin()">LOGIN TO CLASS</button>
     </div>
 
     <div id="screen-dashboard" class="screen">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
             <h4 style="margin:0;">Class: <span id="dashClassName" style="color:var(--primary)">--</span></h4>
-            <button onclick="location.reload()" style="background:#eee; border:none; padding:5px 10px; border-radius:8px;">Logout</button>
+            <button onclick="location.reload()" style="background:#ddd; border:none; padding:5px 10px; border-radius:10px; font-size:11px;">Logout</button>
         </div>
         <button class="btn-main" style="background:var(--primary); margin-bottom:10px;" onclick="addNewStudent()">➕ Add New Student</button>
         <div id="studentListContainer"></div>
-        
-        <button class="btn-main btn-report" onclick="generateClassSummary()">📊 PERFORMANCE REPORT (90/70/Weak)</button>
-        <button class="btn-main btn-att" onclick="generateAttendanceReport()">📋 ATTENDANCE REPORT</button>
+        <button class="btn-main" style="background:#E65100; margin-top:20px;" onclick="generateClassSummary()">📢 DETAILED PERFORMANCE REPORT</button>
+        <button class="btn-main" style="background:#00897B;" onclick="generateAttendanceReport()">📋 ATTENDANCE REPORT</button>
     </div>
 
     <div id="screen-tracker" class="screen">
-        <button onclick="backToDashboard()" style="width:80px; background:#444; color:white; border:none; padding:8px; border-radius:10px; margin-bottom:10px;">⬅ Back</button>
-        <div id="dispName" style="text-align:center; font-weight:bold; font-size:18px;">--</div>
+        <button onclick="backToDashboard()" style="width:90px; background:#444; color:white; border:none; padding:10px; border-radius:15px; margin-bottom:10px; font-weight:bold;">⬅ Back</button>
+        <div id="dispName" style="text-align:center; font-weight:bold; font-size:22px; color:var(--primary);">--</div>
         <div class="score-val" id="scoreVal">...</div>
+        
+        <h5 style="margin:10px 0 5px 0; color:var(--danger);">🚫 Bad Behaviors</h5>
         <div class="grid">
-            <button class="act-btn" style="background:var(--danger);" onclick="updateScore(-10, 'Talking')">🗣️ Talking (-10)</button>
-            <button class="act-btn" style="background:var(--danger);" onclick="updateScore(-15, 'No HW')">📚 No HW (-15)</button>
-            <button class="act-btn" style="background:var(--success);" onclick="updateScore(5, 'Best Ans')">🙋 Best Ans (+5)</button>
-            <button class="act-btn" style="background:var(--success);" onclick="updateScore(10, 'Super')">🌟 Super (+10)</button>
+            <button class="act-btn" style="background:#EF5350;" onclick="updateScore(-10, 'Talking')">🗣️ Talking</button>
+            <button class="act-btn" style="background:#EF5350;" onclick="updateScore(-15, 'No Homework')">📚 No HW</button>
+            <button class="act-btn" style="background:#EF5350;" onclick="updateScore(-20, 'Fighting')">👊 Fighting</button>
+            <button class="act-btn" style="background:#EF5350;" onclick="updateScore(-20, 'Abuse')">😈 Abuse</button>
         </div>
-        <div id="logArea"></div>
+
+        <h5 style="margin:15px 0 5px 0; color:var(--success);">✅ Good Behaviors</h5>
+        <div class="grid">
+            <button class="act-btn" style="background:#66BB6A;" onclick="updateScore(5, 'Best Ans')">🙋 Best Ans</button>
+            <button class="act-btn" style="background:#66BB6A;" onclick="updateScore(5, 'Helping')">🤝 Helping</button>
+            <button class="act-btn" style="background:#66BB6A;" onclick="updateScore(5, 'Silence')">🤫 Silence</button>
+            <button class="act-btn" style="background:#66BB6A;" onclick="updateScore(10, 'Super Work')">🌟 Super</button>
+        </div>
+        <div id="logArea" style="margin-top:15px; background:#f9f9f9; padding:10px; border-radius:10px; height:120px; overflow-y:auto; font-size:11px;"></div>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getDatabase, ref, set, onValue, update, push, get, child } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+    import { getDatabase, ref, set, onValue, update, push, get } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+    // Register Service Worker for PWA
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').then(() => console.log("SW Registered"));
+    }
 
     window.onload = () => { setTimeout(() => { 
         document.getElementById('splash-screen').style.opacity = '0';
@@ -118,10 +127,10 @@
     let teacher = "", cls = "", curID = "", curData = {};
 
     window.teacherLogin = () => {
-        if(document.getElementById('tPin').value !== "5114") { alert("Wrong PIN!"); return; }
+        if(document.getElementById('tPin').value !== "5114") { alert("❌ Wrong PIN!"); return; }
         teacher = document.getElementById('tName').value;
         cls = document.getElementById('tClass').value.trim();
-        if(!teacher || !cls) { alert("Enter Name/Class"); return; }
+        if(!teacher || !cls) { alert("Fill Details"); return; }
         document.getElementById('screen-login').classList.remove('active-screen');
         document.getElementById('screen-dashboard').classList.add('active-screen');
         document.getElementById('dashClassName').innerText = cls.toUpperCase();
@@ -137,13 +146,7 @@
             for(let id in data) {
                 if(data[id].class && data[id].class.toLowerCase().replace(/\s/g, '') === search) {
                     let att = data[id].att || 'P';
-                    cont.innerHTML += `
-                    <div class="student-item">
-                        <div onclick="openTracker('${id}', '${data[id].name}')" style="flex-grow:1;">
-                            <b>${data[id].name}</b><br><small>Score: ${data[id].score}</small>
-                        </div>
-                        <button class="att-dot ${att=='P'?'p-bg':'a-bg'}" onclick="toggleAtt('${id}', '${att}')">${att}</button>
-                    </div>`;
+                    cont.innerHTML += `<div class="student-item"><div onclick="openTracker('${id}', '${data[id].name}')" style="flex-grow:1; cursor:pointer;"><b>${data[id].name}</b><br><small>Score: ${data[id].score}</small></div><button class="att-dot ${att=='P'?'p-bg':'a-bg'}" onclick="toggleAtt('${id}', '${att}')">${att}</button></div>`;
                 }
             }
         });
@@ -164,49 +167,50 @@
     window.updateScore = (p, r) => {
         let ns = Math.max(0, Math.min(100, (curData.score || 100) + p));
         update(ref(db, 'students/'+curID), {score: ns});
-        push(ref(db, 'students/'+curID+'/logs'), {r:r, p:p, t:teacher, date: new Date().toLocaleDateString()});
+        push(ref(db, 'students/'+curID+'/logs'), {r:r, p:p, teacher:teacher, date: new Date().toLocaleDateString()});
     };
 
     function updateUI() {
         document.getElementById('scoreVal').innerText = curData.score || 100;
         let logs = curData.logs ? Object.values(curData.logs).reverse() : [];
-        document.getElementById('logArea').innerHTML = logs.map(l => `<div style="border-bottom:1px solid #eee; padding:3px 0;">${l.r} (${l.p}) - ${l.date}</div>`).join('');
+        document.getElementById('logArea').innerHTML = logs.map(l => `<div style="border-bottom:1px solid #eee; padding:5px 0;"><b>${l.r} (${l.p > 0 ? '+':''}${l.p})</b><br><small>${l.date}</small></div>`).join('');
     }
 
     window.addNewStudent = () => {
-        let n = prompt("Student Name:"); if(!n) return;
+        let n = prompt("Name:"); if(!n) return;
         let id = n.toLowerCase().replace(/\s/g, '') + "-" + cls.toLowerCase().replace(/\s/g, '');
         set(ref(db, 'students/'+id), {name:n, class:cls, score:100, att:'P'});
-    };
-
-    // --- RE-ACTIVATED REPORT LOGIC ---
-    window.generateAttendanceReport = async function() {
-        const snap = await get(ref(db, 'students'));
-        if(!snap.exists()) return;
-        let data = snap.val(), total = 0, absent = [], search = cls.toLowerCase().replace(/\s/g, '');
-        for(let id in data) {
-            if(data[id].class.toLowerCase().replace(/\s/g, '') === search) {
-                total++; if(data[id].att === 'A') absent.push(data[id].name);
-            }
-        }
-        let msg = `*🏫 SHRI GAYATRI SANSKAAR*\n*📋 ATTENDANCE REPORT*\n📅 Date: ${new Date().toLocaleDateString()}\n📂 Class: ${cls}\nTotal: ${total}\nPresent: ${total-absent.length}\nAbsent: ${absent.length}\n----------------\n*Absent List:*\n${absent.join('\n') || 'All Present! 🎉'}`;
-        window.location.href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
     };
 
     window.generateClassSummary = async function() {
         const snap = await get(ref(db, 'students'));
         if(!snap.exists()) return;
-        let data = snap.val(), star=[], avg=[], weak=[], search = cls.toLowerCase().replace(/\s/g, '');
+        let data = snap.val(), star=[], avg=[], weak=[], search = cls.toLowerCase().replace(/\s/g, ''), today = new Date().toLocaleDateString();
         for(let id in data) {
             if(data[id].class.toLowerCase().replace(/\s/g, '') === search) {
-                let s = data[id].score;
-                let obj = `${data[id].name} (${s})`;
-                if(s >= 90) star.push(obj);
-                else if(s >= 70) avg.push(obj);
-                else weak.push(obj);
+                let logs = data[id].logs ? Object.values(data[id].logs) : [];
+                let todayLogs = logs.filter(l => l.date === today);
+                let reasonStr = todayLogs.map(l => `${l.r}(${l.p > 0 ? '+':''}${l.p})`).join(', ');
+                let detail = `• *${data[id].name}* (${data[id].score})\n   └─ Today: ${reasonStr || 'No Change Today'}`;
+                if(data[id].score >= 90) star.push(detail);
+                else if(data[id].score >= 70) avg.push(detail);
+                else weak.push(detail);
             }
         }
-        let msg = `*🏫 SHRI GAYATRI SANSKAAR*\n*📊 PERFORMANCE REPORT*\nClass: ${cls}\n----------------\n*🏆 STAR STUDENTS (90%+):*\n${star.join('\n') || 'None'}\n\n*✨ AVERAGE (70-89%):*\n${avg.join('\n') || 'None'}\n\n*⚠️ NEEDS ATTENTION (<70%):*\n${weak.join('\n') || 'None'}\n----------------\n~ Verified by ${teacher}`;
+        let msg = `*🏫 SHRI GAYATRI SANSKAAR PUBLIC SCHOOL*\n*📊 PERFORMANCE REPORT*\n📅 Date: ${today}\n📂 Class: ${cls}\n\n*🏆 STAR (90%+):*\n${star.join('\n') || 'None'}\n\n*✨ AVG (70-89%):*\n${avg.join('\n') || 'None'}\n\n*⚠️ WEAK (<70%):*\n${weak.join('\n') || 'None'}\n\n~ Verified by: *${teacher}*\n_Tech By Ashish Sir_`;
+        window.location.href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+    };
+
+    window.generateAttendanceReport = async function() {
+        const snap = await get(ref(db, 'students'));
+        if(!snap.exists()) return;
+        let data = snap.val(), total=0, abs=[], search = cls.toLowerCase().replace(/\s/g, '');
+        for(let id in data) {
+            if(data[id].class.toLowerCase().replace(/\s/g, '') === search) {
+                total++; if(data[id].att==='A') abs.push(data[id].name);
+            }
+        }
+        let msg = `*🏫 SHRI GAYATRI SANSKAAR PUBLIC SCHOOL*\n*📋 ATTENDANCE REPORT*\nDate: ${new Date().toLocaleDateString()}\nClass: ${cls}\nPresent: ${total-abs.length}/${total}\n\n*🔴 Absent:* ${abs.join(', ') || 'None'}\n\n~ Verified by: *${teacher}*\n_Tech By Ashish Sir_`;
         window.location.href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
     };
 </script>
