@@ -3,25 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Shri Gayatri Sanskaar Public School</title>
+    <title>SGS School Monitor</title>
     
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="SGS School">
+    <meta name="apple-mobile-web-app-title" content="SGS Monitor">
 
-    <link rel="icon" type="image/png" href="https://i.ibb.co/C38rPXV/WhatsApp-Image-2025-11-29-at-12-40-11-1.jpg">
-    <link rel="apple-touch-icon" href="https://i.ibb.co/C38rPXV/WhatsApp-Image-2025-11-29-at-12-40-11-1.jpg">
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/q7pD76z7/logo-school.jpg">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/q7pD76z7/logo-school.jpg">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #1565C0; --danger: #D32F2F; --success: #2E7D32; --dark: #121212; --gold: #FFD700; --bg: #f4f7f6; --pink: #e91e63; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body { background: var(--bg); color: #333; font-family: 'Poppins', sans-serif; display: flex; justify-content: center; min-height: 100vh; margin: 0; overflow-x: hidden; }
-        
         .container { width: 100%; max-width: 480px; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.1); min-height: 100vh; display: flex; flex-direction: column; position: relative; }
         
-        /* --- FIXED SPLASH SCREEN --- */
+        /* --- SPLASH SCREEN --- */
         #splash-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -34,49 +32,32 @@
             transition: opacity 0.8s ease;
         }
         .splash-logo { width: 180px; height: auto; margin-bottom: 25px; border-radius: 50%; border: 4px solid var(--pink); box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        .splash-title { font-family: 'Cinzel', serif; font-size: 20px; color: var(--primary); font-weight: bold; text-align: center; padding: 0 15px; line-height: 1.3; }
-        .splash-tagline { font-size: 16px; color: var(--pink); font-weight: 600; margin-top: 15px; letter-spacing: 1px; text-transform: uppercase; }
+        .splash-title { font-family: 'Cinzel', serif; font-size: 19px; color: var(--primary); font-weight: bold; text-align: center; line-height: 1.4; padding: 0 15px; }
+        .splash-tagline { font-size: 15px; color: var(--pink); font-weight: 600; margin-top: 12px; letter-spacing: 1px; }
 
         .header { background: var(--primary); color: white; padding: 15px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
         .school-name { font-family: 'Cinzel', serif; font-size: 15px; font-weight: bold; color: var(--gold); }
-        
         .screen { display: none; padding: 20px; flex-grow: 1; flex-direction: column; }
         .active-screen { display: flex; }
-
-        input { width: 100%; padding: 14px; margin: 8px 0; border: 2px solid #ddd; border-radius: 12px; font-size: 16px; text-align: center; background: #fafafa; }
-        .btn-main { background: var(--dark); color: white; width: 100%; padding: 15px; border: none; border-radius: 50px; font-weight: bold; font-size: 16px; margin-top: 15px; cursor: pointer; }
-        
-        /* Student List & Tracker Styles */
-        .student-list-item { background: #fff; border: 1px solid #eee; padding: 15px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .s-avatar { width: 40px; height: 40px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--primary); margin-right: 15px; }
-        .att-btn { width: 38px; height: 38px; border-radius: 50%; border: none; font-weight: bold; color: white; cursor: pointer; }
-        .att-present { background: var(--success); }
-        .att-absent { background: var(--danger); }
-
-        .score-card { background: #fff; border: 2px solid #eee; border-radius: 15px; padding: 10px; text-align: center; margin-bottom: 15px; }
+        input { width: 100%; padding: 14px; margin: 8px 0; border: 2px solid #ddd; border-radius: 12px; font-size: 16px; text-align: center; }
+        .btn-main { background: var(--dark); color: white; width: 100%; padding: 15px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        .student-list-item { background: #fff; border: 1px solid #eee; padding: 15px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .att-btn { width: 35px; height: 35px; border-radius: 50%; border: none; font-weight: bold; color: white; }
+        .att-present { background: var(--success); } .att-absent { background: var(--danger); }
+        .score-card { background: #fff; border: 2px solid #eee; border-radius: 15px; padding: 15px; text-align: center; margin-bottom: 15px; }
         .score-val { font-size: 45px; font-weight: 800; color: var(--primary); }
-        
-        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .action-btn { border: none; padding: 10px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; height: 75px; }
-        .btn-good { background: linear-gradient(135deg, #66BB6A, #2E7D32); }
-        .btn-bad { background: linear-gradient(135deg, #EF5350, #C62828); }
-        
-        .log-area { background: #fff; padding: 15px; border-radius: 15px; max-height: 200px; overflow-y: auto; border: 1px solid #eee; font-size: 12px; }
-        .log-item { display: flex; justify-content: space-between; border-bottom: 1px solid #f5f5f5; padding: 5px 0; }
-        
-        .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); display: flex; justify-content: center; z-index: 200; }
-        .btn-report { background: var(--primary); color: white; padding: 12px 30px; border: none; border-radius: 50px; font-weight: bold; width: 90%; }
-        #reportCanvas { display: none; }
+        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+        .action-btn { border: none; padding: 10px; border-radius: 12px; color: white; font-weight: 600; cursor: pointer; height: 75px; }
+        .log-area { background: #fff; padding: 15px; border-radius: 15px; max-height: 180px; overflow-y: auto; border: 1px solid #eee; font-size: 12px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div id="splash-screen">
-        <img src="https://i.ibb.co/C38rPXV/WhatsApp-Image-2025-11-29-at-12-40-11-1.jpg" alt="Logo" class="splash-logo">
+        <img src="https://i.postimg.cc/q7pD76z7/logo-school.jpg" alt="School Logo" class="splash-logo">
         <div class="splash-title">SHRI GAYATRI SANSKAAR<br>PUBLIC SCHOOL</div>
-        <div class="splash-tagline">"Vidhya Dadati Vinayam"</div>
-        <div style="margin-top: 40px; color: #999; font-size: 11px;">Powered by Ashish Sir</div>
+        <div class="splash-tagline">"VIDHYA DADATI VINAYAM"</div>
     </div>
 
     <div class="header">
@@ -86,10 +67,11 @@
 
     <div id="screen-login" class="screen active-screen" style="justify-content: center; text-align: center;">
         <h4 style="color:#555;">Teacher Login</h4>
-        <input type="text" id="tName" placeholder="Teacher Name">
+        <input type="text" id="tName" placeholder="Your Name">
         <input type="text" id="tClass" placeholder="Class (e.g. 5th)">
         <input type="password" id="tPin" placeholder="Enter PIN">
         <button class="btn-main" onclick="teacherLogin()">LOGIN TO CLASS</button>
+        <p style="font-size:10px; color:#999; margin-top:15px;">One-time login per session.</p>
     </div>
 
     <div id="screen-dashboard" class="screen">
@@ -99,8 +81,6 @@
         </div>
         <button class="btn-main" style="background:var(--primary); margin-bottom:15px;" onclick="addNewStudent()">➕ Add New Student</button>
         <div id="studentListContainer" style="overflow-y:auto; flex-grow:1;"></div>
-        <button class="btn-main" style="background:#E65100;" onclick="generateClassSummary()">📢 PERFORMANCE REPORT</button>
-        <button class="btn-main" style="background:#00897B;" onclick="generateAttendanceReport()">📋 ATTENDANCE REPORT</button>
     </div>
 
     <div id="screen-tracker" class="screen">
@@ -112,29 +92,15 @@
             <div id="dispName" style="font-weight:bold; font-size:20px;">--</div>
             <div id="scoreDisplay" class="score-val">...</div>
         </div>
-        <h5 style="color:var(--danger); margin:5px 0;">🚫 Bad Behavior</h5>
         <div class="grid-container">
-            <button class="action-btn btn-bad" onclick="updateLiveScore(-10, 'Talking')">🗣️ Talking</button>
-            <button class="action-btn btn-bad" onclick="updateLiveScore(-15, 'No Homework')">📚 No HW</button>
-            <button class="action-btn btn-bad" onclick="updateLiveScore(-20, 'Fighting')">👊 Fighting</button>
-            <button class="action-btn btn-bad" onclick="updateLiveScore(-20, 'Bad Behav.')">😈 Bad Behav.</button>
-        </div>
-        <h5 style="color:var(--success); margin:5px 0;">✅ Good Behavior</h5>
-        <div class="grid-container">
-            <button class="action-btn btn-good" onclick="updateLiveScore(5, 'Best Ans')">🙋 Best Ans</button>
-            <button class="action-btn btn-good" onclick="updateLiveScore(5, 'Helping')">🤝 Helping</button>
-            <button class="action-btn btn-good" onclick="updateLiveScore(5, 'Quiet')">🤫 Quiet</button>
-            <button class="action-btn btn-good" onclick="updateLiveScore(10, 'Outstanding')">🌟 Super</button>
+            <button class="action-btn" style="background:#C62828;" onclick="updateLiveScore(-10, 'Talking')">🗣️ Talking</button>
+            <button class="action-btn" style="background:#C62828;" onclick="updateLiveScore(-15, 'No HW')">📚 No HW</button>
+            <button class="action-btn" style="background:#2E7D32;" onclick="updateLiveScore(5, 'Best Ans')">🙋 Best Ans</button>
+            <button class="action-btn" style="background:#2E7D32;" onclick="updateLiveScore(10, 'Super')">🌟 Super</button>
         </div>
         <div class="log-area" id="logList"></div>
     </div>
-
-    <div class="bottom-bar" id="bottomNav" style="display:none;">
-        <button class="btn-report" onclick="generateReport()">📑 SINGLE STUDENT REPORT</button>
-    </div>
 </div>
-
-<canvas id="reportCanvas" width="800" height="1200"></canvas>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
@@ -146,7 +112,7 @@
             const splash = document.getElementById('splash-screen');
             splash.style.opacity = '0';
             setTimeout(() => { splash.style.display = 'none'; }, 800);
-        }, 3500);
+        }, 3000);
     });
 
     const firebaseConfig = {
@@ -162,14 +128,11 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     let currentID = null, studentData = { score: 100 }, teacherName = "", currentClass = "";
-    const TEACHER_PIN = "5114"; 
 
-    // Login
     window.teacherLogin = function() {
-        if (document.getElementById('tPin').value !== TEACHER_PIN) { alert("Wrong PIN!"); return; }
+        if (document.getElementById('tPin').value !== "5114") { alert("Wrong PIN!"); return; }
         teacherName = document.getElementById('tName').value;
         currentClass = document.getElementById('tClass').value.trim();
-        if(!teacherName || !currentClass) { alert("Enter details"); return; }
         document.getElementById('screen-login').classList.remove('active-screen');
         document.getElementById('screen-dashboard').classList.add('active-screen');
         document.getElementById('dashClassName').innerText = currentClass.toUpperCase();
@@ -188,10 +151,7 @@
                     let att = st.att || 'P';
                     container.innerHTML += `
                     <div class="student-list-item" onclick="openStudentTracker('${id}', '${st.name}', '${st.class}')">
-                        <div style="display:flex; align-items:center;">
-                            <div class="s-avatar">${st.name[0]}</div>
-                            <div><b>${st.name}</b><br><small>Score: ${st.score}</small></div>
-                        </div>
+                        <div><b>${st.name}</b><br><small>Score: ${st.score}</small></div>
                         <button class="att-btn ${att=='P'?'att-present':'att-absent'}" onclick="toggleAttendance(event, '${id}', '${att}')">${att}</button>
                     </div>`;
                 }
@@ -202,38 +162,32 @@
     window.toggleAttendance = (e, id, cur) => { e.stopPropagation(); update(ref(db, 'students/'+id), {att: cur=='P'?'A':'P'}); }
     
     window.addNewStudent = () => {
-        let n = prompt("Student Name:"); if(!n) return;
+        let n = prompt("Name:"); if(!n) return;
         let id = n.toLowerCase().replace(/\s/g, '') + "-" + currentClass.toLowerCase().replace(/\s/g, '');
         set(ref(db, 'students/'+id), {name:n, class:currentClass, score:100, att:'P'});
     }
 
-    window.openStudentTracker = (id, name, cls) => {
+    window.openStudentTracker = (id, name) => {
         currentID = id;
         document.getElementById('screen-dashboard').classList.remove('active-screen');
         document.getElementById('screen-tracker').classList.add('active-screen');
-        document.getElementById('bottomNav').style.display = 'flex';
         document.getElementById('dispName').innerText = name;
         onValue(ref(db, 'students/'+id), (s) => { if(currentID==id) { studentData = s.val(); updateUI(); } });
     }
 
-    window.backToDashboard = () => { currentID = null; document.getElementById('screen-tracker').classList.remove('active-screen'); document.getElementById('screen-dashboard').classList.add('active-screen'); document.getElementById('bottomNav').style.display = 'none'; }
+    window.backToDashboard = () => { currentID = null; document.getElementById('screen-tracker').classList.remove('active-screen'); document.getElementById('screen-dashboard').classList.add('active-screen'); }
 
     window.updateLiveScore = (p, r) => {
         let ns = Math.max(0, Math.min(100, (studentData.score || 100) + p));
         update(ref(db, 'students/'+currentID), {score: ns});
-        push(ref(db, 'students/'+currentID+'/logs'), {r:r, p:p, t:teacherName, date: new Date().toLocaleDateString()});
+        push(ref(db, 'students/'+currentID+'/logs'), {r:r, p:p, date: new Date().toLocaleDateString()});
     }
 
     function updateUI() {
         document.getElementById('scoreDisplay').innerText = (studentData.score || 100);
         let logs = studentData.logs ? Object.values(studentData.logs).reverse() : [];
-        document.getElementById('logList').innerHTML = logs.map(l => `<div class="log-item"><span>${l.r} (${l.p})</span><small>${l.date}</small></div>`).join('');
+        document.getElementById('logList').innerHTML = logs.map(l => `<div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding:5px 0;"><span>${l.r} (${l.p})</span><small>${l.date}</small></div>`).join('');
     }
-
-    // Reports Logic placeholders (as in original file)
-    window.generateAttendanceReport = async function() { alert("Generating Attendance..."); /* Logic as per index.html */ }
-    window.generateClassSummary = async function() { alert("Generating Summary..."); /* Logic as per index.html */ }
-    window.generateReport = function() { alert("Generating PNG Report..."); /* Logic as per index.html */ }
 </script>
 </body>
 </html>
