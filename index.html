@@ -197,7 +197,7 @@
                 else weak.push(detail);
             }
         }
-        let msg = `*🏫 SHRI GAYATRI SANSKAAR PUBLIC SCHOOL*\n*📊 PERFORMANCE REPORT*\n📅 Date: ${today}\n📂 Class: ${cls}\n\n*🏆 STAR (90%+):*\n${star.join('\n') || 'None'}\n\n*✨ AVG (70-89%):*\n${avg.join('\n') || 'None'}\n\n*⚠️ NEEDS attention (<70%):*\n${needs attention.join('\n') || 'None'}\n\n~ Verified by: *${teacher}*\n_Tech By Ashish Sir_`;
+        let msg = `*🏫 SHRI GAYATRI SANSKAAR PUBLIC SCHOOL*\n*📊 PERFORMANCE REPORT*\n📅 Date: ${today}\n📂 Class: ${cls}\n\n*🏆 STAR (90%+):*\n${star.join('\n') || 'None'}\n\n*✨ AVG (70-89%):*\n${avg.join('\n') || 'None'}\n\n*⚠️ WEAK (<70%):*\n${weak.join('\n') || 'None'}\n\n~ Verified by: *${teacher}*\n_Tech By Ashish Sir_`;
         window.location.href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
     };
 
