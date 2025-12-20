@@ -6,8 +6,7 @@
     <title>SGS School Monitor</title>
     
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="SGS Monitor">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
     <style>
@@ -16,7 +15,7 @@
         body { background: var(--bg); color: #333; font-family: 'Poppins', sans-serif; display: flex; justify-content: center; min-height: 100vh; margin: 0; overflow-x: hidden; }
         .container { width: 100%; max-width: 480px; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.1); min-height: 100vh; display: flex; flex-direction: column; position: relative; }
         
-        /* --- PERMANENT SPLASH SCREEN --- */
+        /* --- FIXED SPLASH SCREEN --- */
         #splash-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -26,39 +25,44 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.8s ease;
+            transition: opacity 0.5s ease;
         }
-        /* Logo placeholder animation */
-        .splash-logo { width: 160px; height: 160px; border-radius: 50%; border: 4px solid var(--pink); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #fff; }
-        .splash-logo img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .splash-title { font-family: 'Cinzel', serif; font-size: 19px; color: var(--primary); font-weight: bold; text-align: center; line-height: 1.4; padding: 0 15px; }
-        .splash-tagline { font-size: 15px; color: var(--pink); font-weight: 600; margin-top: 12px; letter-spacing: 1px; }
+        .splash-logo-container { 
+            width: 180px; height: 180px; 
+            border-radius: 50%; 
+            border: 4px solid var(--pink); 
+            margin-bottom: 20px;
+            display: flex; align-items: center; justify-content: center;
+            background: #fff; overflow: hidden;
+        }
+        .splash-logo-container img { width: 90%; height: auto; }
+        .splash-title { font-family: 'Cinzel', serif; font-size: 18px; color: var(--primary); font-weight: bold; text-align: center; line-height: 1.4; padding: 0 10px; }
+        .splash-tagline { font-size: 15px; color: var(--pink); font-weight: 600; margin-top: 10px; letter-spacing: 1px; }
 
+        /* Rest of Styles */
         .header { background: var(--primary); color: white; padding: 15px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
         .school-name { font-family: 'Cinzel', serif; font-size: 15px; font-weight: bold; color: var(--gold); }
-        
         .screen { display: none; padding: 20px; flex-grow: 1; flex-direction: column; }
         .active-screen { display: flex; }
-        input { width: 100%; padding: 14px; margin: 8px 0; border: 2px solid #ddd; border-radius: 12px; font-size: 16px; text-align: center; }
-        .btn-main { background: var(--dark); color: white; width: 100%; padding: 15px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 15px; }
-        
+        input { width: 100%; padding: 14px; margin: 8px 0; border: 2px solid #ddd; border-radius: 12px; text-align: center; font-size: 16px; }
+        .btn-main { background: var(--dark); color: white; width: 100%; padding: 15px; border: none; border-radius: 50px; font-weight: bold; font-size: 16px; margin-top: 15px; cursor: pointer; }
         .student-list-item { background: #fff; border: 1px solid #eee; padding: 15px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .att-btn { width: 35px; height: 35px; border-radius: 50%; border: none; font-weight: bold; color: white; }
-        .att-present { background: var(--success); } .att-absent { background: var(--danger); }
         .score-card { background: #fff; border: 2px solid #eee; border-radius: 15px; padding: 15px; text-align: center; margin-bottom: 15px; }
         .score-val { font-size: 45px; font-weight: 800; color: var(--primary); }
+        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+        .action-btn { border: none; padding: 10px; border-radius: 12px; color: white; font-weight: 600; font-size: 12px; cursor: pointer; height: 75px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div id="splash-screen">
-        <div class="splash-logo">
-            <img src="https://raw.githubusercontent.com/ashish-sir-tech/school-assets/main/logo.png" onerror="this.src='https://via.placeholder.com/150?text=SGS+LOGO'" alt="SGS Logo">
+        <div class="splash-logo-container">
+            <img src="https://i.ibb.co/C38rPXV/WhatsApp-Image-2025-11-29-at-12-40-11-1.jpg" alt="Logo">
         </div>
         <div class="splash-title">SHRI GAYATRI SANSKAAR<br>PUBLIC SCHOOL</div>
         <div class="splash-tagline">"VIDHYA DADATI VINAYAM"</div>
+        <div style="margin-top:30px; font-size:12px; color:#aaa;">Loading...</div>
     </div>
 
     <div class="header">
@@ -84,23 +88,57 @@
 </div>
 
 <script type="module">
-    // Splash logic: hide after 3 seconds
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getDatabase, ref, set, onValue, update, push } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+    // Splash Control Logic
     window.addEventListener('load', () => {
         setTimeout(() => {
             const splash = document.getElementById('splash-screen');
-            splash.style.opacity = '0';
-            setTimeout(() => { splash.style.display = 'none'; }, 800);
-        }, 3000);
+            if(splash) {
+                splash.style.opacity = '0';
+                setTimeout(() => { splash.style.display = 'none'; }, 500);
+            }
+        }, 3000); // 3 seconds splash
     });
 
-    // Dummy logic for testing (Your original Firebase logic remains same)
+    const firebaseConfig = {
+        apiKey: "AIzaSyA43-vMdUK3jtsTOzwHhe8QDjJzatpekgM",
+        authDomain: "schoolmonitor-6aa3d.firebaseapp.com",
+        databaseURL: "https://schoolmonitor-6aa3d-default-rtdb.firebaseio.com",
+        projectId: "schoolmonitor-6aa3d",
+        storageBucket: "schoolmonitor-6aa3d.firebasestorage.app",
+        messagingSenderId: "303795138626",
+        appId: "1:303795138626:web:2317ab227f81ce32d2bddb"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    let currentClass = "";
+
     window.teacherLogin = function() {
         if (document.getElementById('tPin').value !== "5114") { alert("Wrong PIN!"); return; }
+        currentClass = document.getElementById('tClass').value.trim();
         document.getElementById('screen-login').classList.remove('active-screen');
         document.getElementById('screen-dashboard').classList.add('active-screen');
-        document.getElementById('dashClassName').innerText = document.getElementById('tClass').value.toUpperCase();
+        document.getElementById('dashClassName').innerText = currentClass.toUpperCase();
+        loadClassStudents();
+    }
+
+    function loadClassStudents() {
+        onValue(ref(db, 'students'), (snapshot) => {
+            const data = snapshot.val();
+            const container = document.getElementById('studentListContainer');
+            container.innerHTML = "";
+            let search = currentClass.toLowerCase().replace(/\s/g, '');
+            for(let id in data) {
+                let st = data[id];
+                if(st.class && st.class.toLowerCase().replace(/\s/g, '') === search) {
+                    container.innerHTML += `<div class="student-list-item"><b>${st.name}</b><small>Score: ${st.score}</small></div>`;
+                }
+            }
+        });
     }
 </script>
-
 </body>
 </html>
