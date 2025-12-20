@@ -56,6 +56,8 @@
     </div>
 
     <div id="screen-login" class="screen active-screen" style="justify-content:center; text-align:center;">
+        <div id="adminNotice" style="background:#FFF9C4; color:#5D4037; padding:10px; border-radius:10px; font-size:12px; margin-bottom:15px; border:1px dashed #FBC02D; display:none;"></div>
+        
         <h4 style="margin-bottom:20px;">Teacher Login Portal</h4>
         <input type="text" id="tName" placeholder="Your Name">
         <input type="text" id="tClass" placeholder="Class (e.g. 5th)">
@@ -102,16 +104,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getDatabase, ref, set, onValue, update, push, get } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
-    // Register Service Worker for PWA
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').then(() => console.log("SW Registered"));
-    }
-
-    window.onload = () => { setTimeout(() => { 
-        document.getElementById('splash-screen').style.opacity = '0';
-        setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 600);
-    }, 3000); };
-
     const firebaseConfig = {
         apiKey: "AIzaSyA43-vMdUK3jtsTOzwHhe8QDjJzatpekgM",
         authDomain: "schoolmonitor-6aa3d.firebaseapp.com",
@@ -126,15 +118,36 @@
     const db = getDatabase(app);
     let teacher = "", cls = "", curID = "", curData = {};
 
+    window.onload = () => { setTimeout(() => { 
+        document.getElementById('splash-screen').style.opacity = '0';
+        setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 600);
+    }, 3000); };
+
+    // 📢 Admin Notice Listener
+    onValue(ref(db, 'admin_settings/notice'), (snap) => {
+        const msgBox = document.getElementById('adminNotice');
+        if(snap.exists() && snap.val() !== "") {
+            msgBox.innerText = "📢 " + snap.val();
+            msgBox.style.display = "block";
+        } else {
+            msgBox.style.display = "none";
+        }
+    });
+
+    // 🔒 Login with Admin PIN Control
     window.teacherLogin = () => {
-        if(document.getElementById('tPin').value !== "5114") { alert("❌ Wrong PIN!"); return; }
-        teacher = document.getElementById('tName').value;
-        cls = document.getElementById('tClass').value.trim();
-        if(!teacher || !cls) { alert("Fill Details"); return; }
-        document.getElementById('screen-login').classList.remove('active-screen');
-        document.getElementById('screen-dashboard').classList.add('active-screen');
-        document.getElementById('dashClassName').innerText = cls.toUpperCase();
-        loadStudents();
+        const enteredPin = document.getElementById('tPin').value;
+        get(ref(db, 'admin_settings/teacher_pin')).then((snap) => {
+            const correctPin = snap.exists() ? snap.val() : "5114";
+            if(enteredPin !== correctPin) { alert("❌ Wrong PIN! Contact Ashish Sir."); return; }
+            teacher = document.getElementById('tName').value;
+            cls = document.getElementById('tClass').value.trim();
+            if(!teacher || !cls) { alert("Fill Details"); return; }
+            document.getElementById('screen-login').classList.remove('active-screen');
+            document.getElementById('screen-dashboard').classList.add('active-screen');
+            document.getElementById('dashClassName').innerText = cls.toUpperCase();
+            loadStudents();
+        });
     };
 
     function loadStudents() {
