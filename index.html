@@ -3,50 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SGS Monitor - Tech By Ashish Sir</title>
-    
-    <link rel="manifest" href="manifest.json">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" type="image/png" href="logo.png">
-    <link rel="apple-touch-icon" href="logo.png">
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <title>SGS Monitor Pro - Tech By Ashish Sir</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cinzel:wght@700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --primary: #1565C0; --danger: #D32F2F; --success: #2E7D32; --dark: #121212; --gold: #FFD700; --bg: #f4f7f6; --pink: #e91e63; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        html, body { height: 100%; margin: 0; overflow: hidden; background: var(--bg); font-family: 'Poppins', sans-serif; }
-        .container { width: 100%; max-width: 480px; background: #fff; height: 100vh; display: flex; flex-direction: column; margin: auto; position: relative; }
+        html, body { height: 100%; margin: 0; background: var(--bg); font-family: 'Poppins', sans-serif; }
+        .container { width: 100%; max-width: 480px; background: #fff; min-height: 100vh; display: flex; flex-direction: column; margin: auto; position: relative; }
         
+        /* UI Elements */
         #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.6s ease; }
-        .splash-logo { width: 160px; height: 160px; border-radius: 50%; border: 4px solid var(--pink); margin-bottom: 20px; }
-
         .header { background: var(--primary); color: white; padding: 15px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; flex-shrink: 0; }
         .school-name { font-family: 'Cinzel', serif; font-weight: bold; color: var(--gold); font-size: 13px; }
-
-        .screen { display: none; padding: 20px; flex-grow: 1; flex-direction: column; overflow-y: auto; padding-bottom: 100px; }
+        .screen { display: none; padding: 20px; flex-grow: 1; flex-direction: column; padding-bottom: 100px; }
         .active-screen { display: flex; }
-
         input { width: 100%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid #ddd; text-align: center; }
         .btn-main { background: var(--dark); color: white; padding: 15px; border: none; border-radius: 50px; font-weight: bold; margin-top: 10px; cursor: pointer; width: 100%; }
-        
         .student-item { background: #fff; border: 1px solid #eee; padding: 12px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .att-dot { width: 35px; height: 35px; border-radius: 50%; border: none; color: white; font-weight: bold; cursor: pointer; }
         .p-bg { background: var(--success); } .a-bg { background: var(--danger); }
-
         .score-val { font-size: 50px; font-weight: 800; color: var(--primary); text-align: center; margin: 5px 0; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .act-btn { border: none; border-radius: 15px; color: white; font-weight: bold; height: 75px; font-size: 13px; cursor: pointer; }
+
+        /* Certificate Styling */
+        #cert-wrapper { position: absolute; left: -9999px; top: 0; }
+        .certificate { width: 800px; height: 600px; background: #fff; border: 20px solid var(--primary); padding: 40px; text-align: center; position: relative; border-image: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c) 1; background-image: radial-gradient(circle, #ffffff, #f9f9f9); }
+        .cert-header { font-family: 'Cinzel', serif; color: var(--primary); font-size: 38px; margin-bottom: 5px; }
+        .cert-award { font-family: 'Great Vibes', cursive; color: #b38728; font-size: 50px; margin: 10px 0; }
+        .cert-msg { font-size: 18px; color: #444; line-height: 1.4; margin-bottom: 20px; }
+        .rank-list { margin: 25px 0; display: flex; justify-content: space-around; }
+        .rank-card { width: 30%; padding: 15px; border-radius: 15px; border: 2px solid #eee; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .rank-1 { background: linear-gradient(145deg, #fff9c4, #fbc02d); border-color: #fbc02d; transform: scale(1.1); }
+        .cert-footer { margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .tech-brand { font-size: 10px; color: #bbb; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div id="splash-screen">
-        <img src="logo.png" onerror="this.src='https://via.placeholder.com/150?text=SGS+LOGO'" class="splash-logo">
+        <img src="logo.png" onerror="this.src='https://via.placeholder.com/150?text=SGS+LOGO'" style="width:160px; height:160px; border-radius:50%; border:4px solid var(--pink); margin-bottom:20px;">
         <div style="font-family:'Cinzel'; color:var(--primary); font-weight:bold; font-size:18px; text-align:center;">SHRI GAYATRI SANSKAAR<br>PUBLIC SCHOOL</div>
-        <div style="color:var(--pink); font-size:14px; margin-top:5px;">"Vidhya Dadati Vinayam"</div>
         <div style="margin-top:20px; font-size:10px; color:#999;">Tech By Ashish Sir</div>
     </div>
 
@@ -55,32 +54,33 @@
         <div class="school-name">SHRI GAYATRI SANSKAAR PUBLIC SCHOOL</div>
     </div>
 
-    <div id="screen-login" class="screen active-screen" style="justify-content:center; text-align:center;">
-        <div id="adminNotice" style="background:#FFF9C4; color:#5D4037; padding:10px; border-radius:10px; font-size:12px; margin-bottom:15px; border:1px dashed #FBC02D; display:none;"></div>
-        
-        <h4 style="margin-bottom:20px;">Teacher Login Portal</h4>
-        <input type="text" id="tName" placeholder="Your Name">
+    <div id="screen-login" class="screen active-screen" style="justify-content:center;">
+        <div id="adminNoticeDisplay" style="background:#FFF9C4; color:#5D4037; padding:15px; border-radius:15px; font-size:14px; margin-bottom:20px; border:1px dashed #FBC02D; display:none; font-weight: 600; text-align: center;"></div>
+        <h4 style="text-align:center; margin-bottom:10px; color:var(--primary);">Teacher Login</h4>
+        <input type="text" id="tName" placeholder="Teacher Name">
         <input type="text" id="tClass" placeholder="Class (e.g. 5th)">
         <input type="password" id="tPin" placeholder="Security PIN">
         <button class="btn-main" onclick="teacherLogin()">LOGIN TO CLASS</button>
+        <div style="text-align:center; margin-top:30px; font-size:11px; color:#bbb;">Tech By Ashish Sir</div>
     </div>
 
     <div id="screen-dashboard" class="screen">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <button class="btn-main" style="background:var(--danger); border:2px solid #fff;" onclick="generateAttendanceReport('emergency')">🛡️ SAFETY ATTENDANCE ALERT</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; margin-top:10px;">
             <h4 style="margin:0;">Class: <span id="dashClassName" style="color:var(--primary)">--</span></h4>
             <button onclick="location.reload()" style="background:#ddd; border:none; padding:5px 10px; border-radius:10px; font-size:11px;">Logout</button>
         </div>
         <button class="btn-main" style="background:var(--primary); margin-bottom:10px;" onclick="addNewStudent()">➕ Add New Student</button>
         <div id="studentListContainer"></div>
-        <button class="btn-main" style="background:#E65100; margin-top:20px;" onclick="generateClassSummary()">📢 DETAILED PERFORMANCE REPORT</button>
-        <button class="btn-main" style="background:#00897B;" onclick="generateAttendanceReport()">📋 ATTENDANCE REPORT</button>
+        <button class="btn-main" style="background:#E65100; margin-top:20px;" onclick="generateClassSummary()">📢 FULL DAY PERFORMANCE REPORT</button>
+        <button class="btn-main" style="background:#00897B; margin-top:10px;" onclick="generateAttendanceReport('normal')">📋 ATTENDANCE REPORT</button>
+        <button class="btn-main" style="background:var(--gold); color: #000; margin-top:10px;" onclick="downloadTopperImage()">🖼️ DOWNLOAD WEEKLY CERTIFICATE</button>
     </div>
 
     <div id="screen-tracker" class="screen">
         <button onclick="backToDashboard()" style="width:90px; background:#444; color:white; border:none; padding:10px; border-radius:15px; margin-bottom:10px; font-weight:bold;">⬅ Back</button>
         <div id="dispName" style="text-align:center; font-weight:bold; font-size:22px; color:var(--primary);">--</div>
         <div class="score-val" id="scoreVal">...</div>
-        
         <h5 style="margin:10px 0 5px 0; color:var(--danger);">🚫 Bad Behaviors</h5>
         <div class="grid">
             <button class="act-btn" style="background:#EF5350;" onclick="updateScore(-10, 'Talking')">🗣️ Talking</button>
@@ -88,7 +88,6 @@
             <button class="act-btn" style="background:#EF5350;" onclick="updateScore(-20, 'Fighting')">👊 Fighting</button>
             <button class="act-btn" style="background:#EF5350;" onclick="updateScore(-20, 'Abuse')">😈 Abuse</button>
         </div>
-
         <h5 style="margin:15px 0 5px 0; color:var(--success);">✅ Good Behaviors</h5>
         <div class="grid">
             <button class="act-btn" style="background:#66BB6A;" onclick="updateScore(5, 'Best Ans')">🙋 Best Ans</button>
@@ -97,6 +96,41 @@
             <button class="act-btn" style="background:#66BB6A;" onclick="updateScore(10, 'Super Work')">🌟 Super</button>
         </div>
         <div id="logArea" style="margin-top:15px; background:#f9f9f9; padding:10px; border-radius:10px; height:120px; overflow-y:auto; font-size:11px;"></div>
+    </div>
+</div>
+
+<div id="cert-wrapper">
+    <div id="capture-area" class="certificate">
+        <div class="cert-header">SHRI GAYATRI SANSKAAR PUBLIC SCHOOL</div>
+        <div class="cert-award">Certificate of Excellence</div>
+        <div class="cert-msg">
+            <b>Badhai Ho! (Congratulations)</b><br>
+            Humein garv hai ki Class <span id="c-class"></span> ke in bacchon ne shandaar pradarshan kiya.<br>
+            <i>We are proud of these students for their excellent performance and discipline.</i>
+        </div>
+        
+        <div class="rank-list">
+            <div class="rank-card">
+                <div style="font-size:12px; color:#666;">RANK 2</div>
+                <div id="r2-name" style="font-weight:bold; font-size:18px;">---</div>
+            </div>
+            <div class="rank-card rank-1">
+                <div style="font-size:14px; color:#5d4037;">🏆 TOPPER 🥇</div>
+                <div id="r1-name" style="font-weight:bold; font-size:22px;">---</div>
+            </div>
+            <div class="rank-card">
+                <div style="font-size:12px; color:#666;">RANK 3</div>
+                <div id="r3-name" style="font-weight:bold; font-size:18px;">---</div>
+            </div>
+        </div>
+
+        <div class="cert-footer">
+            <div style="text-align:left;">
+                <div style="width:120px; border-bottom:1px solid #333;"></div>
+                <div style="font-size:12px; margin-top:5px;">Principal Signature</div>
+            </div>
+            <div class="tech-brand">Tech By Ashish Sir</div>
+        </div>
     </div>
 </div>
 
@@ -121,28 +155,26 @@
     window.onload = () => { setTimeout(() => { 
         document.getElementById('splash-screen').style.opacity = '0';
         setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 600);
-    }, 3000); };
+    }, 2000); };
 
-    // 📢 Admin Notice Listener
     onValue(ref(db, 'admin_settings/notice'), (snap) => {
-        const msgBox = document.getElementById('adminNotice');
+        const msgBox = document.getElementById('adminNoticeDisplay');
         if(snap.exists() && snap.val() !== "") {
-            msgBox.innerText = "📢 " + snap.val();
+            msgBox.innerHTML = "📢 ADMIN NOTICE:<br>" + snap.val();
             msgBox.style.display = "block";
         } else {
             msgBox.style.display = "none";
         }
     });
 
-    // 🔒 Login with Admin PIN Control
     window.teacherLogin = () => {
         const enteredPin = document.getElementById('tPin').value;
         get(ref(db, 'admin_settings/teacher_pin')).then((snap) => {
             const correctPin = snap.exists() ? snap.val() : "5114";
-            if(enteredPin !== correctPin) { alert("❌ Wrong PIN! Contact Ashish Sir."); return; }
+            if(enteredPin !== String(correctPin)) { alert("❌ Wrong PIN!"); return; }
             teacher = document.getElementById('tName').value;
             cls = document.getElementById('tClass').value.trim();
-            if(!teacher || !cls) { alert("Fill Details"); return; }
+            if(!teacher || !cls) return alert("Fill Details");
             document.getElementById('screen-login').classList.remove('active-screen');
             document.getElementById('screen-dashboard').classList.add('active-screen');
             document.getElementById('dashClassName').innerText = cls.toUpperCase();
@@ -166,7 +198,6 @@
     }
 
     window.toggleAtt = (id, cur) => { update(ref(db, 'students/'+id), {att: cur=='P'?'A':'P'}); };
-
     window.openTracker = (id, name) => {
         curID = id;
         document.getElementById('screen-dashboard').classList.remove('active-screen');
@@ -174,25 +205,42 @@
         document.getElementById('dispName').innerText = name;
         onValue(ref(db, 'students/'+id), (s) => { if(curID==id) { curData = s.val(); updateUI(); } });
     };
-
     window.backToDashboard = () => { curID = ""; document.getElementById('screen-tracker').classList.remove('active-screen'); document.getElementById('screen-dashboard').classList.add('active-screen'); };
 
     window.updateScore = (p, r) => {
         let ns = Math.max(0, Math.min(100, (curData.score || 100) + p));
         update(ref(db, 'students/'+curID), {score: ns});
-        push(ref(db, 'students/'+curID+'/logs'), {r:r, p:p, teacher:teacher, date: new Date().toLocaleDateString()});
+        push(ref(db, 'students/'+curID+'/logs'), { r: r, p: p, teacher: teacher, date: new Date().toLocaleDateString() });
     };
 
     function updateUI() {
         document.getElementById('scoreVal').innerText = curData.score || 100;
         let logs = curData.logs ? Object.values(curData.logs).reverse() : [];
-        document.getElementById('logArea').innerHTML = logs.map(l => `<div style="border-bottom:1px solid #eee; padding:5px 0;"><b>${l.r} (${l.p > 0 ? '+':''}${l.p})</b><br><small>${l.date}</small></div>`).join('');
+        document.getElementById('logArea').innerHTML = logs.map(l => `<div style="border-bottom:1px solid #eee; padding:5px 0;"><b>${l.r} (${l.p > 0 ? '+':''}${l.p})</b><br><small>By ${l.teacher} on ${l.date}</small></div>`).join('');
     }
 
     window.addNewStudent = () => {
         let n = prompt("Name:"); if(!n) return;
         let id = n.toLowerCase().replace(/\s/g, '') + "-" + cls.toLowerCase().replace(/\s/g, '');
         set(ref(db, 'students/'+id), {name:n, class:cls, score:100, att:'P'});
+    };
+
+    window.downloadTopperImage = async function() {
+        const snap = await get(ref(db, 'students'));
+        if(!snap.exists()) return;
+        let data = snap.val(), students = [], search = cls.toLowerCase().replace(/\s/g, '');
+        for(let id in data) if(data[id].class.toLowerCase().replace(/\s/g, '') === search) students.push(data[id]);
+        students.sort((a, b) => b.score - a.score);
+        document.getElementById('c-class').innerText = cls;
+        document.getElementById('r1-name').innerText = students[0] ? students[0].name : "---";
+        document.getElementById('r2-name').innerText = students[1] ? students[1].name : "---";
+        document.getElementById('r3-name').innerText = students[2] ? students[2].name : "---";
+        html2canvas(document.querySelector("#capture-area")).then(canvas => {
+            let link = document.createElement('a');
+            link.download = `SGS_Weekly_Certificate_${cls}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        });
     };
 
     window.generateClassSummary = async function() {
@@ -203,27 +251,32 @@
             if(data[id].class.toLowerCase().replace(/\s/g, '') === search) {
                 let logs = data[id].logs ? Object.values(data[id].logs) : [];
                 let todayLogs = logs.filter(l => l.date === today);
-                let reasonStr = todayLogs.map(l => `${l.r}(${l.p > 0 ? '+':''}${l.p})`).join(', ');
-                let detail = `• *${data[id].name}* (${data[id].score})\n   └─ Today: ${reasonStr || 'No Change Today'}`;
+                let summary = todayLogs.map(l => `${l.r}(${l.p > 0 ? '+':''}${l.p}) by ${l.teacher}`).join(', ');
+                let detail = `• *${data[id].name}* (${data[id].score})\n   └─ Today: ${summary || 'No Activity'}`;
                 if(data[id].score >= 90) star.push(detail);
                 else if(data[id].score >= 70) avg.push(detail);
                 else weak.push(detail);
             }
         }
-        let msg = `*🏫 SHRI GAYATRI SANSKAAR PUBLIC SCHOOL*\n*📊 PERFORMANCE REPORT*\n📅 Date: ${today}\n📂 Class: ${cls}\n\n*🏆 STAR (90%+):*\n${star.join('\n') || 'None'}\n\n*✨ AVG (70-89%):*\n${avg.join('\n') || 'None'}\n\n*⚠️ WEAK (<70%):*\n${weak.join('\n') || 'None'}\n\n~ Verified by: *${teacher}*\n_Tech By Ashish Sir_`;
+        let msg = `*🏫 SHRI GAYATRI SANSKAAR PUBLIC SCHOOL*\n*📊 DAILY PERFORMANCE SUMMARY*\n\nNamaste Parents, aaj ki report:\n\n*🏆 STARS:* \n${star.join('\n')}\n\n*✨ AVERAGE:* \n${avg.join('\n')}\n\n*⚠️ WEAK:* \n${weak.join('\n')}\n\n_Tech By Ashish Sir_`;
         window.location.href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
     };
 
-    window.generateAttendanceReport = async function() {
+    window.generateAttendanceReport = async function(type) {
         const snap = await get(ref(db, 'students'));
         if(!snap.exists()) return;
         let data = snap.val(), total=0, abs=[], search = cls.toLowerCase().replace(/\s/g, '');
         for(let id in data) {
-            if(data[id].class.toLowerCase().replace(/\s/g, '') === search) {
+            if(data[id].class && data[id].class.toLowerCase().replace(/\s/g, '') === search) {
                 total++; if(data[id].att==='A') abs.push(data[id].name);
             }
         }
-        let msg = `*🏫 SHRI GAYATRI SANSKAAR PUBLIC SCHOOL*\n*📋 ATTENDANCE REPORT*\nDate: ${new Date().toLocaleDateString()}\nClass: ${cls}\nPresent: ${total-abs.length}/${total}\n\n*🔴 Absent:* ${abs.join(', ') || 'None'}\n\n~ Verified by: *${teacher}*\n_Tech By Ashish Sir_`;
+        let msg = "";
+        if(type === 'emergency') {
+            msg = `*🛡️ SCHOOL SAFETY ALERT 🛡️*\n*SHRI GAYATRI SANSKAAR PUBLIC SCHOOL*\n\nNamaste Parents, humein ummed hai aapka bacha ghar par safe hai. Aaj ye bache absent hain:\n\n📍 *${abs.join(', ') || 'Sabhi Upasthit Hain'}*\n\nAgar bacha school ke liye nikla hai aur yahan nahi pahuncha, toh turant school sampark karein.\n\n_If your child left for school but isn't on this list, please contact us immediately._\n\n~ *Teacher: ${teacher}*`;
+        } else {
+            msg = `*📋 ATTENDANCE REPORT*\nClass: ${cls}\nPresent: ${total-abs.length}/${total}\n_Tech By Ashish Sir_`;
+        }
         window.location.href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
     };
 </script>
