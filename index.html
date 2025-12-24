@@ -244,6 +244,7 @@
         });
     };
 
+    // --- MODIFIED FUNCTION ---
     window.generateClassSummary = async function() {
         const snap = await get(ref(db, 'students'));
         if(!snap.exists()) return;
@@ -252,8 +253,11 @@
             if(data[id].class.toLowerCase().replace(/\s/g, '') === search) {
                 let logs = data[id].logs ? Object.values(data[id].logs) : [];
                 let todayLogs = logs.filter(l => l.date === today);
-                let summary = todayLogs.map(l => `${l.r}(${l.p > 0 ? '+':''}${l.p}) by ${l.teacher}`).join(', ');
-                let detail = `• *${data[id].name}* (${data[id].score})\n   └─ Today: ${summary || 'No Activity'}`;
+                
+                // Updated Logic to show Teacher Name clearly for every action
+                let summary = todayLogs.map(l => `${l.teacher}: ${l.r}(${l.p > 0 ? '+':''}${l.p})`).join(', ');
+                
+                let detail = `• *${data[id].name}* (${data[id].score})\n   └─ Updates: ${summary || 'No Activity'}`;
                 if(data[id].score >= 90) star.push(detail);
                 else if(data[id].score >= 70) avg.push(detail);
                 else weak.push(detail);
