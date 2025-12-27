@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SGS Monitor Pro - Final</title>
+    <title>SGS Monitor Pro - Weekly Analysis</title>
     <link rel="manifest" href="manifest.json">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cinzel:wght@700&family=Great+Vibes&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --primary: #1565C0; --danger: #D32F2F; --success: #2E7D32; --dark: #121212; --gold: #FFD700; --bg: #f4f7f6; --pink: #e91e63; }
@@ -13,7 +13,6 @@
         html, body { height: 100%; margin: 0; background: var(--bg); font-family: 'Poppins', sans-serif; }
         .container { width: 100%; max-width: 480px; background: #fff; min-height: 100vh; display: flex; flex-direction: column; margin: auto; position: relative; }
         
-        /* UI Elements */
         #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.6s ease; }
         .header { background: var(--primary); color: white; padding: 15px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; flex-shrink: 0; }
         .school-name { font-family: 'Cinzel', serif; font-weight: bold; color: var(--gold); font-size: 13px; }
@@ -28,23 +27,27 @@
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .act-btn { border: none; border-radius: 15px; color: white; font-weight: bold; height: 75px; font-size: 13px; cursor: pointer; }
 
-        /* Certificate Styling */
+        /* --- NEW PROFESSIONAL CERTIFICATE STYLING --- */
         #cert-wrapper { position: absolute; left: -9999px; top: 0; }
-        .certificate { width: 800px; height: 600px; background: #fff; border: 20px solid var(--primary); padding: 40px; text-align: center; position: relative; border-image: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c) 1; background-image: radial-gradient(circle, #ffffff, #f9f9f9); }
-        .cert-header { font-family: 'Cinzel', serif; color: var(--primary); font-size: 38px; margin-bottom: 5px; }
-        .cert-award { font-family: 'Great Vibes', cursive; color: #b38728; font-size: 50px; margin: 10px 0; }
-        .cert-msg { font-size: 18px; color: #444; line-height: 1.4; margin-bottom: 20px; }
-        .rank-list { margin: 25px 0; display: flex; justify-content: space-around; }
-        .rank-card { width: 30%; padding: 15px; border-radius: 15px; border: 2px solid #eee; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .rank-1 { background: linear-gradient(145deg, #fff9c4, #fbc02d); border-color: #fbc02d; transform: scale(1.1); }
-        .cert-footer { margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
-        .tech-brand { font-size: 10px; color: #bbb; text-transform: uppercase; letter-spacing: 1px; }
+        .certificate { width: 800px; height: 600px; background: #fff; padding: 30px; text-align: center; position: relative; border: 15px solid var(--primary); border-image: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c) 5; }
+        .cert-inner { border: 2px solid #b38728; height: 100%; padding: 20px; background: radial-gradient(circle, #fff 60%, #f9f9f9); }
+        .cert-school { font-family: 'Cinzel', serif; color: var(--primary); font-size: 32px; margin-bottom: 5px; font-weight: 700; }
+        .cert-title { font-family: 'Great Vibes', cursive; color: #b38728; font-size: 45px; margin: 10px 0; }
+        .cert-msg { font-size: 16px; color: #444; margin-bottom: 30px; font-style: italic; line-height: 1.4; }
+        .rank-container { display: flex; justify-content: center; align-items: flex-end; gap: 20px; margin-top: 20px; }
+        .rank-box { padding: 15px; border-radius: 15px; border: 2px solid #eee; width: 180px; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .rank-box.gold { transform: scale(1.15); border-color: #ffd700; background: linear-gradient(145deg, #fffdf0, #fff9c4); z-index: 2; border-width: 3px; }
+        .rank-num { font-weight: bold; font-size: 14px; margin-bottom: 5px; color: #666; }
+        .gold .rank-num { color: #b38728; font-size: 18px; }
+        .rank-name { font-weight: 700; font-size: 20px; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .cert-footer { margin-top: 50px; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; }
+        .sign-box { border-top: 1px solid #333; width: 150px; font-size: 12px; padding-top: 5px; }
 
-        /* DIARY & MARKS STYLES */
+        /* DIARY & MARKS */
         .tab-group { display: flex; background: #eee; padding: 5px; border-radius: 25px; margin-bottom: 15px; }
         .tab-btn { flex: 1; border: none; background: transparent; padding: 10px; border-radius: 20px; font-weight: bold; color: #666; cursor: pointer; }
         .tab-btn.active { background: white; color: var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .marks-input { width: 60px; padding: 8px; margin: 0; text-align: center; font-weight: bold; border: 2px solid #ddd; }
+        .marks-input { width: 60px; padding: 8px; border: 2px solid #ddd; text-align: center; }
     </style>
 </head>
 <body>
@@ -62,109 +65,99 @@
     </div>
 
     <div id="screen-login" class="screen active-screen" style="justify-content:center;">
-        <div id="adminNoticeDisplay" style="background:#FFF9C4; color:#5D4037; padding:15px; border-radius:15px; font-size:14px; margin-bottom:20px; border:1px dashed #FBC02D; display:none; font-weight: 600; text-align: center;"></div>
-        <h4 style="text-align:center; margin-bottom:10px; color:var(--primary);">Teacher Login</h4>
+        <div id="adminNoticeDisplay" style="background:#FFF9C4; color:#5D4037; padding:15px; border-radius:15px; font-size:14px; margin-bottom:20px; border:1px dashed #FBC02D; display:none; text-align: center;"></div>
+        <h4 style="text-align:center; color:var(--primary);">Teacher Login</h4>
         <input type="text" id="tName" placeholder="Teacher Name">
-        
         <input type="text" id="tClass" placeholder="Class (e.g. 5th, Sainik)">
-        
         <input type="password" id="tPin" placeholder="Security PIN">
         <button class="btn-main" onclick="teacherLogin()">LOGIN TO CLASS</button>
-        <div style="text-align:center; margin-top:30px; font-size:11px; color:#bbb;">Tech By Ashish Sir</div>
     </div>
 
     <div id="screen-dashboard" class="screen">
         <button class="btn-main" style="background:var(--danger); border:2px solid #fff;" onclick="generateAttendanceReport('emergency')">🛡️ SAFETY ATTENDANCE ALERT</button>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; margin-top:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin:15px 0;">
             <h4 style="margin:0;">Class: <span id="dashClassName" style="color:var(--primary)">--</span></h4>
-            <button onclick="location.reload()" style="background:#ddd; border:none; padding:5px 10px; border-radius:10px; font-size:11px;">Logout</button>
+            <button onclick="location.reload()" style="background:#ddd; border:none; padding:5px 10px; border-radius:10px;">Logout</button>
         </div>
-
-        <button class="btn-main" style="background: linear-gradient(45deg, #6200EA, #9C27B0); margin-bottom:15px;" onclick="openDiary()">📝 DIARY & EXAM MARKS</button>
-        
-        <button class="btn-main" style="background:var(--primary); margin-bottom:10px;" onclick="addNewStudent()">➕ Add New Student</button>
+        <button class="btn-main" style="background: linear-gradient(45deg, #6200EA, #9C27B0);" onclick="openDiary()">📝 DIARY & EXAM MARKS</button>
+        <button class="btn-main" style="background:var(--primary); margin:10px 0;" onclick="addNewStudent()">➕ Add New Student</button>
         <div id="studentListContainer"></div>
-        <button class="btn-main" style="background:#E65100; margin-top:20px;" onclick="generateClassSummary()">📢 FULL DAY PERFORMANCE REPORT</button>
+        <button class="btn-main" style="background:#E65100; margin-top:20px;" onclick="generateWeeklyProfessionalReport()">📊 WEEKLY PERFORMANCE REPORT</button>
         <button class="btn-main" style="background:#00897B; margin-top:10px;" onclick="generateAttendanceReport('normal')">📋 ATTENDANCE REPORT</button>
-        <button class="btn-main" style="background:var(--gold); color: #000; margin-top:10px;" onclick="downloadTopperImage()">🖼️ DOWNLOAD WEEKLY CERTIFICATE</button>
+        <button class="btn-main" style="background:var(--gold); color: #000; margin-top:10px;" onclick="downloadWeeklyCertificate()">🖼️ DOWNLOAD WEEKLY CERTIFICATE</button>
     </div>
 
     <div id="screen-tracker" class="screen">
-        <button onclick="backToDashboard()" style="width:90px; background:#444; color:white; border:none; padding:10px; border-radius:15px; margin-bottom:10px; font-weight:bold;">⬅ Back</button>
+        <button onclick="backToDashboard()" style="width:90px; background:#444; color:white; border:none; padding:10px; border-radius:15px; margin-bottom:10px;">⬅ Back</button>
         <div id="dispName" style="text-align:center; font-weight:bold; font-size:22px; color:var(--primary);">--</div>
         <div class="score-val" id="scoreVal">...</div>
-        
-        <h5 style="margin:10px 0 5px 0; color:var(--danger);">🚫 Bad Behaviors</h5>
+        <h5 style="color:var(--danger); margin:10px 0;">🚫 Bad Behaviors</h5>
         <div class="grid">
             <button class="act-btn" style="background:#EF5350;" onclick="updateScore(-5, 'Talking')">🗣️ Talking</button>
             <button class="act-btn" style="background:#EF5350;" onclick="updateScore(-5, 'No Homework')">📚 No HW</button>
-            <button class="act-btn" style="background:#D32F2F; border:2px solid #FFCDD2;" onclick="updateScore(-15, 'Fighting')">👊 Fighting</button>
+            <button class="act-btn" style="background:#D32F2F;" onclick="updateScore(-15, 'Fighting')">👊 Fighting</button>
             <button class="act-btn" style="background:#EF5350;" onclick="updateScore(-5, 'Abuse')">😈 Abuse</button>
         </div>
-        
-        <h5 style="margin:15px 0 5px 0; color:var(--success);">✅ Good Behaviors</h5>
+        <h5 style="color:var(--success); margin:15px 0 10px 0;">✅ Good Behaviors</h5>
         <div class="grid">
             <button class="act-btn" style="background:#66BB6A;" onclick="updateScore(5, 'Best Ans')">🙋 Best Ans</button>
             <button class="act-btn" style="background:#66BB6A;" onclick="updateScore(5, 'Helping')">🤝 Helping</button>
             <button class="act-btn" style="background:#66BB6A;" onclick="updateScore(5, 'Silence')">🤫 Silence</button>
             <button class="act-btn" style="background:#66BB6A;" onclick="updateScore(5, 'Super Work')">🌟 Super</button>
         </div>
-        <div id="logArea" style="margin-top:15px; background:#f9f9f9; padding:10px; border-radius:10px; height:120px; overflow-y:auto; font-size:11px;"></div>
+        <div id="logArea" style="margin-top:15px; background:#f9f9f9; padding:10px; border-radius:10px; height:100px; overflow-y:auto; font-size:11px;"></div>
     </div>
 
     <div id="screen-diary" class="screen">
-        <button onclick="backToDashboardFromDiary()" style="width:80px; background:#ddd; border:none; padding:8px; border-radius:20px; font-weight:bold; margin-bottom:15px;">⬅ Back</button>
-        
+        <button onclick="backToDashboardFromDiary()" style="width:80px; background:#ddd; border:none; padding:8px; border-radius:20px; margin-bottom:15px;">⬅ Back</button>
         <div class="tab-group">
-            <button class="tab-btn active" onclick="switchDiaryTab('hw')" id="btn-hw">📖 Homework</button>
-            <button class="tab-btn" onclick="switchDiaryTab('test')" id="btn-test">📊 Test Marks</button>
+            <button class="tab-btn active" onclick="switchDiaryTab('hw')" id="btn-hw">Homework</button>
+            <button class="tab-btn" onclick="switchDiaryTab('test')" id="btn-test">Tests</button>
         </div>
-
         <div id="tab-hw-content">
-            <div style="background:#FFF3E0; padding:15px; border-radius:10px; border:1px solid #FFE0B2;">
-                <h4 style="margin:0 0 10px 0; color:#E65100;">Today's Diary</h4>
-                <label style="font-size:12px; font-weight:bold;">Subject:</label>
-                <select id="hwSubject" style="margin-top:0;">
-                    <option value="Math">Math</option><option value="Science">Science</option>
-                    <option value="English">English</option><option value="Hindi">Hindi</option>
-                    <option value="SST">SST</option><option value="Sainik Prep">Sainik Prep</option>
-                </select>
-                <label style="font-size:12px; font-weight:bold;">Homework:</label>
-                <textarea id="hwText" rows="4" placeholder="e.g. Solve Ex 2.1 Q1 to Q5 in Fair Copy..."></textarea>
-                <button class="btn-main" style="background:#E65100;" onclick="sendDiaryWhatsApp()">📤 SEND TO PARENTS</button>
-            </div>
+            <textarea id="hwText" rows="4" placeholder="Enter Diary..."></textarea>
+            <button class="btn-main" style="background:#E65100;" onclick="sendDiaryWhatsApp()">📤 SEND DIARY</button>
         </div>
-
         <div id="tab-test-content" style="display:none;">
-            <div style="background:#E8F5E9; padding:15px; border-radius:10px; border:1px solid #C8E6C9;">
-                <h4 style="margin:0 0 10px 0; color:#2E7D32;">Enter Test Marks</h4>
-                <input type="text" id="testName" placeholder="Test Name (e.g. Unit Test 1)" style="margin-top:0;">
-                <input type="number" id="totalMarks" placeholder="Total Marks (e.g. 20)">
-                <h5 style="margin:10px 0;">Student List:</h5>
-                <div id="marksList" style="max-height:300px; overflow-y:auto;">Loading...</div>
-                <button class="btn-main" style="background:#2E7D32;" onclick="sendResultReport()">📢 SEND RESULT REPORT</button>
-            </div>
+            <input type="text" id="testName" placeholder="Test Name">
+            <input type="number" id="totalMarks" placeholder="Total Marks">
+            <div id="marksList"></div>
+            <button class="btn-main" style="background:var(--success);" onclick="saveTestResult()">💾 SAVE MARKS</button>
         </div>
     </div>
 </div>
 
 <div id="cert-wrapper">
     <div id="capture-area" class="certificate">
-        <div class="cert-header">SHRI GAYATRI SANSKAAR PUBLIC SCHOOL</div>
-        <div class="cert-award">Certificate of Excellence</div>
-        <div class="cert-msg">
-            <b>Badhai Ho! (Congratulations)</b><br>
-            Humein garv hai ki Class <span id="c-class"></span> ke in bacchon ne shandaar pradarshan kiya.<br>
-            <i>We are proud of these students for their excellent performance and discipline.</i>
-        </div>
-        <div class="rank-list">
-            <div class="rank-card"><div style="font-size:12px; color:#666;">RANK 2</div><div id="r2-name" style="font-weight:bold; font-size:18px;">---</div></div>
-            <div class="rank-card rank-1"><div style="font-size:14px; color:#5d4037;">🏆 TOPPER 🥇</div><div id="r1-name" style="font-weight:bold; font-size:22px;">---</div></div>
-            <div class="rank-card"><div style="font-size:12px; color:#666;">RANK 3</div><div id="r3-name" style="font-weight:bold; font-size:18px;">---</div></div>
-        </div>
-        <div class="cert-footer">
-            <div style="text-align:left;"><div style="width:120px; border-bottom:1px solid #333;"></div><div style="font-size:12px; margin-top:5px;">Principal Signature</div></div>
-            <div class="tech-brand">Tech By Ashish Sir</div>
+        <div class="cert-inner">
+            <div class="cert-school">SHRI GAYATRI SANSKAAR PUBLIC SCHOOL</div>
+            <div style="font-size: 12px; letter-spacing: 2px; color: #666; text-transform: uppercase;">Weekly Excellence Recognition</div>
+            <div class="cert-title">Stars of the Week</div>
+            <div class="cert-msg">
+                We are extremely proud to announce the top performers of <b>Class <span id="cert-cls"></span></b>.<br>
+                Your hard work, discipline, and consistent performance have set a great example!
+            </div>
+            
+            <div class="rank-container">
+                <div class="rank-box">
+                    <div class="rank-num">🥈 RANK 2</div>
+                    <div class="rank-name" id="cert-r2">---</div>
+                </div>
+                <div class="rank-box gold">
+                    <div class="rank-num">🥇 TOPPER</div>
+                    <div class="rank-name" id="cert-r1">---</div>
+                </div>
+                <div class="rank-box">
+                    <div class="rank-num">🥉 RANK 3</div>
+                    <div class="rank-name" id="cert-r3">---</div>
+                </div>
+            </div>
+
+            <div class="cert-footer">
+                <div style="font-size: 10px; color: #999;">Date: <span id="cert-date"></span></div>
+                <div class="sign-box">Principal Signature</div>
+                <div style="font-size: 10px; color: #999;">Tech By Ashish Sir</div>
+            </div>
         </div>
     </div>
 </div>
@@ -187,17 +180,14 @@
     const db = getDatabase(app);
     let teacher = "", cls = "", curID = "", curData = {};
 
-    window.onload = () => { setTimeout(() => { document.getElementById('splash-screen').style.opacity = '0'; setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 600); }, 2000); };
-    onValue(ref(db, 'admin_settings/notice'), (snap) => { const mb=document.getElementById('adminNoticeDisplay'); if(snap.exists()&&snap.val()!=""){mb.innerHTML="📢 ADMIN NOTICE:<br>"+snap.val();mb.style.display="block";}else{mb.style.display="none";} });
+    window.onload = () => { setTimeout(() => { document.getElementById('splash-screen').style.display='none'; }, 2000); };
+    onValue(ref(db, 'admin_settings/notice'), (snap) => { if(snap.exists()){ const m=document.getElementById('adminNoticeDisplay'); m.innerText=snap.val(); m.style.display="block";} });
 
     window.teacherLogin = () => {
-        const p = document.getElementById('tPin').value;
-        get(ref(db, 'admin_settings/teacher_pin')).then((snap) => {
-            const cp = snap.exists() ? snap.val() : "5114";
-            if(p !== String(cp)) { alert("❌ Wrong PIN!"); return; }
+        get(ref(db, 'admin_settings/teacher_pin')).then(s => {
+            if(document.getElementById('tPin').value !== String(s.val()||"5114")) return alert("Wrong PIN");
             teacher = document.getElementById('tName').value;
             cls = document.getElementById('tClass').value.trim();
-            if(!teacher || !cls) return alert("Fill Details");
             document.getElementById('screen-login').classList.remove('active-screen');
             document.getElementById('screen-dashboard').classList.add('active-screen');
             document.getElementById('dashClassName').innerText = cls.toUpperCase();
@@ -207,126 +197,123 @@
 
     function loadStudents() {
         onValue(ref(db, 'students'), (snap) => {
-            const data = snap.val();
             const cont = document.getElementById('studentListContainer');
-            cont.innerHTML = "";
-            let search = cls.toLowerCase().replace(/\s/g, '');
+            cont.innerHTML = ""; let search = cls.toLowerCase().replace(/\s/g, '');
+            const data = snap.val();
             for(let id in data) {
                 if(data[id].class && data[id].class.toLowerCase().replace(/\s/g, '') === search) {
                     let att = data[id].att || 'P';
-                    cont.innerHTML += `<div class="student-item"><div onclick="openTracker('${id}', '${data[id].name}')" style="flex-grow:1; cursor:pointer;"><b>${data[id].name}</b><br><small>Score: ${data[id].score}</small></div><button class="att-dot ${att=='P'?'p-bg':'a-bg'}" onclick="toggleAtt('${id}', '${att}')">${att}</button></div>`;
+                    cont.innerHTML += `<div class="student-item"><div onclick="openTracker('${id}', '${data[id].name}')" style="flex-grow:1;"><b>${data[id].name}</b><br><small>Points: ${data[id].score}</small></div><button class="att-dot ${att=='P'?'p-bg':'a-bg'}" onclick="toggleAtt('${id}','${att}')">${att}</button></div>`;
                 }
             }
         });
     }
-
-    window.toggleAtt = (id, cur) => { update(ref(db, 'students/'+id), {att: cur=='P'?'A':'P'}); };
-    window.openTracker = (id, name) => { curID = id; document.getElementById('screen-dashboard').classList.remove('active-screen'); document.getElementById('screen-tracker').classList.add('active-screen'); document.getElementById('dispName').innerText = name; onValue(ref(db, 'students/'+id), (s) => { if(curID==id) { curData = s.val(); updateUI(); } }); };
-    window.backToDashboard = () => { curID = ""; document.getElementById('screen-tracker').classList.remove('active-screen'); document.getElementById('screen-dashboard').classList.add('active-screen'); };
 
     window.updateScore = (p, r) => {
         let ns = Math.max(0, Math.min(100, (curData.score || 100) + p));
         update(ref(db, 'students/'+curID), {score: ns});
-        push(ref(db, 'students/'+curID+'/logs'), { r: r, p: p, teacher: teacher, date: new Date().toLocaleDateString() });
+        push(ref(db, 'weekly_analysis/'+curID), { r: r, p: p, date: new Date().toLocaleDateString() });
     };
 
-    function updateUI() { document.getElementById('scoreVal').innerText = curData.score || 100; let logs = curData.logs ? Object.values(curData.logs).reverse() : []; document.getElementById('logArea').innerHTML = logs.map(l => `<div style="border-bottom:1px solid #eee; padding:5px 0;"><b>${l.r} (${l.p > 0 ? '+':''}${l.p})</b><br><small>By ${l.teacher} on ${l.date}</small></div>`).join(''); }
-    window.addNewStudent = () => { let n = prompt("Name:"); if(!n) return; let id = n.toLowerCase().replace(/\s/g, '') + "-" + cls.toLowerCase().replace(/\s/g, ''); set(ref(db, 'students/'+id), {name:n, class:cls, score:100, att:'P'}); };
+    // Professional Weekly WhatsApp Report (Mon-Sat)
+    window.generateWeeklyProfessionalReport = async function() {
+        const snap = await get(ref(db, 'students'));
+        const weeklyLogs = await get(ref(db, 'weekly_analysis'));
+        const weeklyTests = await get(ref(db, 'weekly_tests'));
+        
+        if(!snap.exists()) return alert("No Data Found");
+        let data = snap.val(), logs = weeklyLogs.val()||{}, tests = weeklyTests.val()||{};
+        let search = cls.toLowerCase().replace(/\s/g, '');
+        let reportData = [];
 
-    window.downloadTopperImage = async function() {
-        const snap = await get(ref(db, 'students')); if(!snap.exists()) return;
-        let d = snap.val(), s = [], search = cls.toLowerCase().replace(/\s/g, '');
-        for(let id in d) if(d[id].class.toLowerCase().replace(/\s/g, '') === search) s.push(d[id]);
-        s.sort((a, b) => b.score - a.score);
-        document.getElementById('c-class').innerText = cls; document.getElementById('r1-name').innerText = s[0]?s[0].name:"-"; document.getElementById('r2-name').innerText = s[1]?s[1].name:"-"; document.getElementById('r3-name').innerText = s[2]?s[2].name:"-";
-        html2canvas(document.querySelector("#capture-area")).then(c => { let l = document.createElement('a'); l.download = `Cert_${cls}.png`; l.href = c.toDataURL(); l.click(); });
-    };
-
-    window.generateClassSummary = async function() {
-        const snap = await get(ref(db, 'students')); if(!snap.exists()) return;
-        let data = snap.val(), star=[], avg=[], weak=[], search = cls.toLowerCase().replace(/\s/g, ''), today = new Date().toLocaleDateString();
         for(let id in data) {
-            if(data[id].class.toLowerCase().replace(/\s/g, '') === search) {
-                let logs = data[id].logs ? Object.values(data[id].logs) : [];
-                let todayLogs = logs.filter(l => l.date === today);
-                let summary = todayLogs.map(l => `${l.teacher}: ${l.r}(${l.p > 0 ? '+':''}${l.p})`).join(', ');
-                let detail = `• *${data[id].name}* (${data[id].score})\n   └─ Updates: ${summary || 'No Activity'}`;
-                if(data[id].score >= 90) star.push(detail); else if(data[id].score >= 70) avg.push(detail); else weak.push(detail);
+            if(data[id].class && data[id].class.toLowerCase().replace(/\s/g, '') === search) {
+                let sLogs = logs[id] ? Object.values(logs[id]) : [];
+                let sTests = tests[id] ? Object.values(tests[id]) : [];
+                let bad = { Talking:0, "No Homework":0, Fighting:0, Abuse:0 };
+                let good = { "Best Ans":0, Helping:0, Silence:0, "Super Work":0 };
+                sLogs.forEach(l => {
+                    if(l.p < 0) bad[l.r] = (bad[l.r] || 0) + Math.abs(l.p);
+                    else good[l.r] = (good[l.r] || 0) + l.p;
+                });
+                let tAvg = 0;
+                if(sTests.length > 0) tAvg = sTests.reduce((a,b)=>a+(b.m/b.t)*100, 0)/sTests.length;
+                reportData.push({ name: data[id].name, score: data[id].score, bad, good, tAvg: tAvg.toFixed(0) });
             }
         }
-        let msg = `*🏫 SHRI GAYATRI SANSKAAR PUBLIC SCHOOL*\n*📊 DAILY PERFORMANCE SUMMARY*\n\nNamaste Parents, aaj ki report:\n\n*🏆 STARS:* \n${star.join('\n')}\n\n*✨ AVERAGE:* \n${avg.join('\n')}\n\n*⚠️ WEAK:* \n${weak.join('\n')}\n\n_Tech By Ashish Sir_`;
-        window.location.href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+
+        reportData.sort((a,b) => b.score - a.score);
+
+        let msg = `*🏫 SHRI GAYATRI SANSKAAR PUBLIC SCHOOL*\n*📊 WEEKLY PERFORMANCE REPORT*\n\nनमस्ते अभिभावकों, यह रिपोर्ट आपके बच्चे के पूरे सप्ताह के व्यवहार और पढ़ाई का आईना है। कृपया देखें कि बच्चे ने कहाँ सुधार किया है और कहाँ और मेहनत की आवश्यकता है। 🙏\n\n*Class:* ${cls}\n--------------------------\n`;
+        reportData.forEach((s, i) => {
+            let rank = (i === 0) ? "🥇 " : (i === 1) ? "🥈 " : (i === 2) ? "🥉 " : `${i+1}. `;
+            msg += `${rank}*${s.name.toUpperCase()}*\n🚫 *Bad Habits:* Talk:${s.bad.Talking}%, HW:${s.bad["No Homework"]}%, Fight:${s.bad.Fighting}%\n✅ *Good Habits:* Ans:${s.good["Best Ans"]}%, Help:${s.good.Helping}%, Silence:${s.good.Silence}%\n📝 *Test Perf:* ${s.tAvg}%\n⭐ *Final Points:* ${s.score}/100\n--------------------------\n`;
+        });
+        msg += `\n_Tech By Ashish Sir & Group_`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
     };
 
-    window.generateAttendanceReport = async function(type) {
-        const snap = await get(ref(db, 'students')); if(!snap.exists()) return;
-        let d = snap.val(), total=0, abs=[], search = cls.toLowerCase().replace(/\s/g, '');
-        for(let id in d) { if(d[id].class && d[id].class.toLowerCase().replace(/\s/g, '') === search) { total++; if(d[id].att==='A') abs.push(d[id].name); } }
-        let msg = type === 'emergency' ? `*🛡️ SCHOOL SAFETY ALERT 🛡️*\n*SHRI GAYATRI SANSKAAR PUBLIC SCHOOL*\n\nNamaste Parents, aaj ye bache absent hain:\n📍 *${abs.join(', ') || 'Sabhi Upasthit Hain'}*\n\nAgar bacha school ke liye nikla hai aur yahan nahi pahuncha, toh turant school sampark karein.\n\n~ *Teacher: ${teacher}*` : `*📋 ATTENDANCE REPORT*\nClass: ${cls}\nPresent: ${total-abs.length}/${total}\n_Tech By Ashish Sir_`;
-        window.location.href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+    // Certificate Download Logic
+    window.downloadWeeklyCertificate = async function() {
+        const snap = await get(ref(db, 'students'));
+        if(!snap.exists()) return;
+        let search = cls.toLowerCase().replace(/\s/g, '');
+        let students = Object.values(snap.val()).filter(s => s.class && s.class.toLowerCase().replace(/\s/g, '') === search);
+        students.sort((a,b) => b.score - a.score);
+
+        document.getElementById('cert-cls').innerText = cls.toUpperCase();
+        document.getElementById('cert-r1').innerText = students[0] ? students[0].name : "---";
+        document.getElementById('cert-r2').innerText = students[1] ? students[1].name : "---";
+        document.getElementById('cert-r3').innerText = students[2] ? students[2].name : "---";
+        document.getElementById('cert-date').innerText = new Date().toLocaleDateString();
+
+        html2canvas(document.querySelector("#capture-area"), { scale: 2 }).then(canvas => {
+            let link = document.createElement('a');
+            link.download = `SGS_Stars_${cls}.png`;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        });
     };
 
-    window.openDiary = () => { document.getElementById('screen-dashboard').classList.remove('active-screen'); document.getElementById('screen-diary').classList.add('active-screen'); loadStudentsForMarks(); };
+    // Marks saving
+    window.saveTestResult = () => {
+        const test = document.getElementById('testName').value;
+        const total = document.getElementById('totalMarks').value;
+        const inputs = document.querySelectorAll('.marks-input');
+        if(!test || !total) return alert("Enter Test Name & Total");
+        inputs.forEach(inp => {
+            const sid = inp.id.substring(5);
+            if(inp.value !== "") push(ref(db, 'weekly_tests/'+sid), { n: test, m: parseFloat(inp.value), t: parseFloat(total) });
+        });
+        alert("Tests Saved!");
+    };
+
+    // Standard Utils
+    window.toggleAtt = (id, cur) => { update(ref(db, 'students/'+id), {att: cur=='P'?'A':'P'}); };
+    window.openTracker = (id, name) => { curID = id; document.getElementById('screen-dashboard').classList.remove('active-screen'); document.getElementById('screen-tracker').classList.add('active-screen'); document.getElementById('dispName').innerText = name; onValue(ref(db, 'students/'+id), s => { curData = s.val(); document.getElementById('scoreVal').innerText = curData.score; }); };
+    window.backToDashboard = () => { document.getElementById('screen-tracker').classList.remove('active-screen'); document.getElementById('screen-dashboard').classList.add('active-screen'); };
+    window.addNewStudent = () => { let n = prompt("Name:"); if(n) set(ref(db, 'students/'+n.toLowerCase().replace(/\s/g,'')), {name:n, class:cls, score:100, att:'P'}); };
+    window.openDiary = () => { document.getElementById('screen-dashboard').classList.remove('active-screen'); document.getElementById('screen-diary').classList.add('active-screen'); loadMarksList(); };
     window.backToDashboardFromDiary = () => { document.getElementById('screen-diary').classList.remove('active-screen'); document.getElementById('screen-dashboard').classList.add('active-screen'); };
-    window.switchDiaryTab = (tab) => { document.getElementById('tab-hw-content').style.display = tab==='hw'?'block':'none'; document.getElementById('tab-test-content').style.display = tab==='test'?'block':'none'; document.getElementById('btn-hw').className = tab==='hw'?'tab-btn active':'tab-btn'; document.getElementById('btn-test').className = tab==='test'?'tab-btn active':'tab-btn'; };
-    window.sendDiaryWhatsApp = () => { const sub = document.getElementById('hwSubject').value; const work = document.getElementById('hwText').value; if(!work) return alert("Write homework!"); const msg = `*📖 DAILY DIARY UPDATE*\n*Class:* ${cls}\n*Subject:* ${sub}\n*Date:* ${new Date().toLocaleDateString()}\n\n*Homework:*\n${work}\n\n_Note: Please check and sign the diary._\n~ ${teacher}`; window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`); };
+    window.switchDiaryTab = (t) => { document.getElementById('tab-hw-content').style.display = t=='hw'?'block':'none'; document.getElementById('tab-test-content').style.display = t=='test'?'block':'none'; };
+    window.sendDiaryWhatsApp = () => { window.open(`https://wa.me/?text=${encodeURIComponent("*SGS DIARY*\n"+document.getElementById('hwText').value)}`); };
 
-    function loadStudentsForMarks() {
+    function loadMarksList() {
         onValue(ref(db, 'students'), (snap) => {
             const list = document.getElementById('marksList'); list.innerHTML = "";
-            if(!snap.exists()) { list.innerHTML="No students found."; return; }
-            const data = snap.val(); const search = cls.toLowerCase().replace(/\s/g, ''); let count = 0;
-            for(let id in data) {
-                if(data[id].class && data[id].class.toLowerCase().replace(/\s/g, '') === search) {
-                    count++;
-                    list.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; padding:5px;"><span style="font-size:14px;">${data[id].name}</span><input type="number" class="marks-input" id="mark-${id}" placeholder="0"></div>`;
-                }
-            }
-            if(count===0) list.innerHTML = "<div style='text-align:center'>No students in this class.</div>";
+            let search = cls.toLowerCase().replace(/\s/g, '');
+            for(let id in snap.val()) if(snap.val()[id].class.toLowerCase().replace(/\s/g,'') === search)
+            list.innerHTML += `<div>${snap.val()[id].name}: <input type="number" class="marks-input" id="mark-${id}"></div>`;
         });
     }
 
-    // --- UPDATED RESULT SENDER WITH AUTO RANK ---
-    window.sendResultReport = async () => {
-        const test = document.getElementById('testName').value; const total = document.getElementById('totalMarks').value;
-        if(!test || !total) return alert("Enter Test Name & Total Marks");
-
-        const inputs = document.querySelectorAll('.marks-input'); 
-        const snap = await get(ref(db, 'students')); 
-        const data = snap.val();
-        let studentResults = [];
-
-        // Collect Data
-        inputs.forEach(inp => {
-            const sid = inp.id.substring(5);
-            const marksVal = inp.value;
-            if(marksVal !== "" && data[sid]) { 
-                studentResults.push({ name: data[sid].name, marks: parseFloat(marksVal) });
-            }
+    window.generateAttendanceReport = (type) => {
+        get(ref(db, 'students')).then(s => {
+            let abs = []; Object.values(s.val()).forEach(v => { if(v.att==='A') abs.push(v.name); });
+            let m = type==='emergency' ? `*SAFETY ALERT* Absent: ${abs.join(',')}` : `*ATTENDANCE REPORT*`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(m)}`);
         });
-
-        if(studentResults.length === 0) return alert("Enter marks for at least one student.");
-
-        // Sort descending (High to Low)
-        studentResults.sort((a, b) => b.marks - a.marks);
-
-        // Build Report
-        let report = `*📊 RESULT REPORT: ${test}*\n*Class:* ${cls} | *Total Marks:* ${total}\n\n`;
-        
-        studentResults.forEach((stu, index) => {
-            let rank = index + 1;
-            let icon = rank === 1 ? "🥇" : (rank === 2 ? "🥈" : (rank === 3 ? "🥉" : `#${rank}`));
-            report += `${icon} ${stu.name}: ${stu.marks}/${total}\n`;
-        });
-        
-        report += `\n_Teacher: ${teacher}_\n_SGS School System_`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(report)}`);
     };
 </script>
-
-<script>
-  if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').then(reg => console.log('SGS Service Worker Registered!')).catch(err => console.log('Service Worker Error', err)); }); }
-</script>
-
 </body>
 </html>
