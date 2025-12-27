@@ -123,6 +123,7 @@
             <input type="number" id="totalMarks" placeholder="Total Marks">
             <div id="marksList"></div>
             <button class="btn-main" style="background:var(--success);" onclick="saveTestResult()">💾 SAVE MARKS</button>
+            <button class="btn-main" style="background:var(--primary);" onclick="shareMarksWhatsApp()">📤 SHARE MARKS ON WHATSAPP</button>
         </div>
     </div>
 </div>
@@ -250,6 +251,45 @@
             msg += `${rank}*${s.name.toUpperCase()}*\n🚫 *Bad Habits:* Talk:${s.bad.Talking}%, HW:${s.bad["No Homework"]}%, Fight:${s.bad.Fighting}%\n✅ *Good Habits:* Ans:${s.good["Best Ans"]}%, Help:${s.good.Helping}%, Silence:${s.good.Silence}%\n📝 *Test Perf:* ${s.tAvg}%\n⭐ *Final Points:* ${s.score}/100\n--------------------------\n`;
         });
         msg += `\n_Tech By Ashish Sir & Group_`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
+    };
+
+    // New Function: Share Marks on WhatsApp with Ranking
+    window.shareMarksWhatsApp = async function() {
+        const testName = document.getElementById('testName').value;
+        const totalMarks = document.getElementById('totalMarks').value;
+        const inputs = document.querySelectorAll('.marks-input');
+
+        if(!testName || !totalMarks) return alert("Please enter Test Name and Total Marks first!");
+
+        let marksData = [];
+        const snap = await get(ref(db, 'students'));
+        const students = snap.val();
+
+        inputs.forEach(inp => {
+            const sid = inp.id.substring(5);
+            const val = inp.value;
+            if(val !== "" && students[sid]) {
+                marksData.push({
+                    name: students[sid].name,
+                    obtained: parseFloat(val)
+                });
+            }
+        });
+
+        if(marksData.length === 0) return alert("No marks entered to share!");
+
+        // Sort by marks (Descending)
+        marksData.sort((a, b) => b.obtained - a.obtained);
+
+        let msg = `*🏫 SHRI GAYATRI SANSKAAR PUBLIC SCHOOL*\n*📝 TEST RESULT REPORT*\n\n*Subject/Test:* ${testName}\n*Total Marks:* ${totalMarks}\n*Class:* ${cls}\n--------------------------\n`;
+        
+        marksData.forEach((s, i) => {
+            let medal = (i === 0) ? "🥇 " : (i === 1) ? "🥈 " : (i === 2) ? "🥉 " : `${i+1}. `;
+            msg += `${medal}*${s.name.toUpperCase()}*\nMarks: ${s.obtained}/${totalMarks}\n--------------------------\n`;
+        });
+
+        msg += `\n_Tech By Ashish Sir_`;
         window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
     };
 
