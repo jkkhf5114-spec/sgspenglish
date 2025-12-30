@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SGS Monitor Pro - Weekly Analysis</title>
+    <title>SGS Monitor Pro - Daily Analysis</title>
     <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cinzel:wght@700&family=Great+Vibes&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -27,7 +27,6 @@
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .act-btn { border: none; border-radius: 15px; color: white; font-weight: bold; height: 75px; font-size: 13px; cursor: pointer; }
 
-        /* --- NEW PROFESSIONAL CERTIFICATE STYLING --- */
         #cert-wrapper { position: absolute; left: -9999px; top: 0; }
         .certificate { width: 800px; height: 600px; background: #fff; padding: 30px; text-align: center; position: relative; border: 15px solid var(--primary); border-image: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c) 5; }
         .cert-inner { border: 2px solid #b38728; height: 100%; padding: 20px; background: radial-gradient(circle, #fff 60%, #f9f9f9); }
@@ -43,7 +42,6 @@
         .cert-footer { margin-top: 50px; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; }
         .sign-box { border-top: 1px solid #333; width: 150px; font-size: 12px; padding-top: 5px; }
 
-        /* DIARY & MARKS */
         .tab-group { display: flex; background: #eee; padding: 5px; border-radius: 25px; margin-bottom: 15px; }
         .tab-btn { flex: 1; border: none; background: transparent; padding: 10px; border-radius: 20px; font-weight: bold; color: #666; cursor: pointer; }
         .tab-btn.active { background: white; color: var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
@@ -82,7 +80,7 @@
         <button class="btn-main" style="background: linear-gradient(45deg, #6200EA, #9C27B0);" onclick="openDiary()">📝 DIARY & EXAM MARKS</button>
         <button class="btn-main" style="background:var(--primary); margin:10px 0;" onclick="addNewStudent()">➕ Add New Student</button>
         <div id="studentListContainer"></div>
-        <button class="btn-main" style="background:#E65100; margin-top:20px;" onclick="generateWeeklyProfessionalReport()">📊 WEEKLY PERFORMANCE REPORT</button>
+        <button class="btn-main" style="background:#E65100; margin-top:20px;" onclick="generateDailyProfessionalReport()">📊 DAILY PERFORMANCE REPORT</button>
         <button class="btn-main" style="background:#00897B; margin-top:10px;" onclick="generateAttendanceReport('normal')">📋 ATTENDANCE REPORT</button>
         <button class="btn-main" style="background:var(--gold); color: #000; margin-top:10px;" onclick="downloadWeeklyCertificate()">🖼️ DOWNLOAD WEEKLY CERTIFICATE</button>
     </div>
@@ -216,8 +214,8 @@
         push(ref(db, 'weekly_analysis/'+curID), { r: r, p: p, date: new Date().toLocaleDateString() });
     };
 
-    // Professional Weekly WhatsApp Report (Mon-Sat)
-    window.generateWeeklyProfessionalReport = async function() {
+    // Professional Daily WhatsApp Report
+    window.generateDailyProfessionalReport = async function() {
         const snap = await get(ref(db, 'students'));
         const weeklyLogs = await get(ref(db, 'weekly_analysis'));
         const weeklyTests = await get(ref(db, 'weekly_tests'));
@@ -226,17 +224,23 @@
         let data = snap.val(), logs = weeklyLogs.val()||{}, tests = weeklyTests.val()||{};
         let search = cls.toLowerCase().replace(/\s/g, '');
         let reportData = [];
+        let today = new Date().toLocaleDateString();
 
         for(let id in data) {
             if(data[id].class && data[id].class.toLowerCase().replace(/\s/g, '') === search) {
-                let sLogs = logs[id] ? Object.values(logs[id]) : [];
-                let sTests = tests[id] ? Object.values(tests[id]) : [];
+                // Filter logs for TODAY only
+                let sLogs = logs[id] ? Object.values(logs[id]).filter(l => l.date === today) : [];
+                // Filter tests for TODAY only
+                let sTests = tests[id] ? Object.values(tests[id]).filter(t => t.date === today) : [];
+                
                 let bad = { Talking:0, "No Homework":0, Fighting:0, Abuse:0 };
                 let good = { "Best Ans":0, Helping:0, Silence:0, "Super Work":0 };
+                
                 sLogs.forEach(l => {
                     if(l.p < 0) bad[l.r] = (bad[l.r] || 0) + Math.abs(l.p);
                     else good[l.r] = (good[l.r] || 0) + l.p;
                 });
+                
                 let tAvg = 0;
                 if(sTests.length > 0) tAvg = sTests.reduce((a,b)=>a+(b.m/b.t)*100, 0)/sTests.length;
                 reportData.push({ name: data[id].name, score: data[id].score, bad, good, tAvg: tAvg.toFixed(0) });
@@ -245,16 +249,15 @@
 
         reportData.sort((a,b) => b.score - a.score);
 
-        let msg = `*🏫 SHRI GAYATRI SANSKAAR PUBLIC SCHOOL*\n*📊 WEEKLY PERFORMANCE REPORT*\n\nनमस्ते अभिभावकों, यह रिपोर्ट आपके बच्चे के पूरे सप्ताह के व्यवहार और पढ़ाई का आईना है। कृपया देखें कि बच्चे ने कहाँ सुधार किया है और कहाँ और मेहनत की आवश्यकता है। 🙏\n\n*Class:* ${cls}\n--------------------------\n`;
+        let msg = `*🏫 SHRI GAYATRI SANSKAAR PUBLIC SCHOOL*\n*📊 DAILY PERFORMANCE REPORT*\n\nनमस्ते अभिभावकों, यह रिपोर्ट आपके बच्चे के आज के अनुशासन और पढ़ाई का आईना है। कृपया देखें कि बच्चे ने कहाँ सुधार किया है और कहाँ और मेहनत की आवश्यकता है। 🙏\n\n*Date:* ${today}\n*Class:* ${cls}\n--------------------------\n`;
         reportData.forEach((s, i) => {
             let rank = (i === 0) ? "🥇 " : (i === 1) ? "🥈 " : (i === 2) ? "🥉 " : `${i+1}. `;
-            msg += `${rank}*${s.name.toUpperCase()}*\n🚫 *Bad Habits:* Talk:${s.bad.Talking}%, HW:${s.bad["No Homework"]}%, Fight:${s.bad.Fighting}%\n✅ *Good Habits:* Ans:${s.good["Best Ans"]}%, Help:${s.good.Helping}%, Silence:${s.good.Silence}%\n📝 *Test Perf:* ${s.tAvg}%\n⭐ *Final Points:* ${s.score}/100\n--------------------------\n`;
+            msg += `${rank}*${s.name.toUpperCase()}*\n🚫 *Bad Habits:* Talk:${s.bad.Talking}%, NOHW:${s.bad["No Homework"]}%, Fight:${s.bad.Fighting}%\n✅ *Good Habits:* Ans:${s.good["Best Ans"]}%, Help:${s.good.Helping}%, Silence:${s.good.Silence}%\n📝 *Today Test:* ${s.tAvg}%\n⭐ *Final Points:* ${s.score}/100\n--------------------------\n`;
         });
         msg += `\n_Tech By Ashish Sir & Group_`;
         window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
     };
 
-    // New Function: Share Marks on WhatsApp with Ranking
     window.shareMarksWhatsApp = async function() {
         const testName = document.getElementById('testName').value;
         const totalMarks = document.getElementById('totalMarks').value;
@@ -279,7 +282,6 @@
 
         if(marksData.length === 0) return alert("No marks entered to share!");
 
-        // Sort by marks (Descending)
         marksData.sort((a, b) => b.obtained - a.obtained);
 
         let msg = `*🏫 SHRI GAYATRI SANSKAAR PUBLIC SCHOOL*\n*📝 TEST RESULT REPORT*\n\n*Subject/Test:* ${testName}\n*Total Marks:* ${totalMarks}\n*Class:* ${cls}\n--------------------------\n`;
@@ -293,7 +295,6 @@
         window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
     };
 
-    // Certificate Download Logic
     window.downloadWeeklyCertificate = async function() {
         const snap = await get(ref(db, 'students'));
         if(!snap.exists()) return;
@@ -315,7 +316,6 @@
         });
     };
 
-    // Marks saving
     window.saveTestResult = () => {
         const test = document.getElementById('testName').value;
         const total = document.getElementById('totalMarks').value;
@@ -323,12 +323,11 @@
         if(!test || !total) return alert("Enter Test Name & Total");
         inputs.forEach(inp => {
             const sid = inp.id.substring(5);
-            if(inp.value !== "") push(ref(db, 'weekly_tests/'+sid), { n: test, m: parseFloat(inp.value), t: parseFloat(total) });
+            if(inp.value !== "") push(ref(db, 'weekly_tests/'+sid), { n: test, m: parseFloat(inp.value), t: parseFloat(total), date: new Date().toLocaleDateString() });
         });
         alert("Tests Saved!");
     };
 
-    // Standard Utils
     window.toggleAtt = (id, cur) => { update(ref(db, 'students/'+id), {att: cur=='P'?'A':'P'}); };
     window.openTracker = (id, name) => { curID = id; document.getElementById('screen-dashboard').classList.remove('active-screen'); document.getElementById('screen-tracker').classList.add('active-screen'); document.getElementById('dispName').innerText = name; onValue(ref(db, 'students/'+id), s => { curData = s.val(); document.getElementById('scoreVal').innerText = curData.score; }); };
     window.backToDashboard = () => { document.getElementById('screen-tracker').classList.remove('active-screen'); document.getElementById('screen-dashboard').classList.add('active-screen'); };
